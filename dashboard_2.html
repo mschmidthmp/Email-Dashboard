@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Psych Congress — Email Copy Library 2026</title>
+<style>
+:root{
+  --blue:#00589a;--dark-blue:#004681;--orange:#faa73f;--slate:#30485f;
+  --green:#16a34a;--red:#dc2626;--yellow:#d97706;--bg:#f0f4f8;--radius:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--slate);font-size:13px;}
+
+header{background:linear-gradient(135deg,var(--dark-blue),var(--blue));color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+header h1{font-size:17px;font-weight:700;}
+header .meta{font-size:11px;opacity:.8;}
+
+.controls{background:#fff;border-bottom:2px solid #e2e8f0;padding:10px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.fb{padding:5px 12px;border-radius:20px;border:1.5px solid #cbd5e1;background:#fff;font-size:11px;font-weight:600;cursor:pointer;color:var(--slate);transition:all .15s;}
+.fb:hover,.fb.on{background:var(--slate);color:#fff;border-color:var(--slate);}
+.fb.uspc.on{background:#1e40af;border-color:#1e40af;}
+.fb.pcr.on{background:#9d174d;border-color:#9d174d;}
+.fb.elevate.on{background:#6b21a8;border-color:#6b21a8;}
+.fb.npi.on{background:#92400e;border-color:#92400e;}
+.fb.pai.on{background:#0369a1;border-color:#0369a1;}
+select{padding:5px 10px;border:1.5px solid #cbd5e1;border-radius:var(--radius);font-size:11px;color:var(--slate);}
+input[type=text]{padding:6px 11px;border:1.5px solid #cbd5e1;border-radius:var(--radius);font-size:12px;width:200px;outline:none;}
+input[type=text]:focus{border-color:var(--blue);}
+#emailCount{font-size:11px;color:#94a3b8;margin-left:auto;}
+
+.main{padding:20px 24px 48px;}
+
+.sh{font-size:14px;font-weight:700;color:var(--slate);margin:20px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--orange);}
+
+/* EMAIL CARD */
+.ec{background:#fff;border-radius:var(--radius);border:1px solid #e2e8f0;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.ec-hdr{padding:12px 16px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px;cursor:pointer;border-bottom:1px solid #f1f5f9;}
+.ec-hdr:hover{background:#fafafa;}
+.ec-date{font-size:10px;font-weight:700;color:#94a3b8;margin-bottom:3px;}
+.ec-name{font-size:13px;font-weight:700;color:var(--slate);}
+.ec-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;}
+.pill{display:inline-block;padding:2px 7px;border-radius:12px;font-size:10px;font-weight:700;}
+.arrow{font-size:11px;color:#94a3b8;flex-shrink:0;margin-top:2px;}
+
+.ec-body{display:none;padding:16px;border-top:1px solid #f1f5f9;}
+.ec-body.open{display:block;}
+
+.field-label{font-size:10px;font-weight:700;text-transform:uppercase;color:#94a3b8;margin-bottom:4px;margin-top:12px;letter-spacing:.5px;}
+.field-label:first-child{margin-top:0;}
+.subj{display:flex;gap:8px;margin-bottom:4px;}
+.subj-tag{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;flex-shrink:0;}
+.subj-a{background:#dbeafe;color:#1e40af;}
+.subj-b{background:#f3e8ff;color:#6b21a8;}
+.preview-box{font-style:italic;font-size:12px;color:#374151;background:#f8fafc;padding:7px 10px;border-radius:6px;margin-bottom:2px;}
+.copy-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:12px 14px;font-size:12px;line-height:1.8;color:#1f2937;white-space:pre-wrap;font-family:'Segoe UI',Arial,sans-serif;}
+.from-box{font-size:12px;color:#374151;background:#f1f5f9;padding:6px 10px;border-radius:6px;}
+.cta-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:8px 12px;font-size:12px;font-weight:700;color:var(--blue);}
+.note-box{background:#fef9f0;border-left:3px solid var(--orange);padding:8px 12px;border-radius:0 6px 6px 0;font-size:11px;line-height:1.65;color:#374151;}
+
+.alert{padding:10px 14px;border-radius:var(--radius);margin-bottom:14px;font-size:12px;line-height:1.6;}
+.alert.info{background:#dbeafe;border-left:4px solid var(--blue);color:#1e40af;}
+.alert.warn{background:#fef3c7;border-left:4px solid var(--yellow);color:#92400e;}
+
+.month-header{background:var(--slate);color:#fff;padding:10px 16px;border-radius:var(--radius);margin:20px 0 12px;font-size:13px;font-weight:700;}
+
+.hidden{display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>✉️ Psych Congress Portfolio — Email Copy Library 2026</h1>
+    <div class="meta">Rewritten for seat-fill effectiveness · No personal sender names · No fluff · June–December 2026</div>
+  </div>
+  <div style="font-size:11px;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:12px;" id="emailCount"></div>
+</header>
+
+<div class="controls">
+  <button class="fb on" data-brand="ALL" onclick="filter(this,'ALL')">All</button>
+  <button class="fb uspc" data-brand="USPC" onclick="filter(this,'USPC')" style="border-color:#1e40af;color:#1e40af;">Psych Congress</button>
+  <button class="fb pcr" data-brand="PCR" onclick="filter(this,'PCR')" style="border-color:#9d174d;color:#9d174d;">PC Regionals</button>
+  <button class="fb elevate" data-brand="ELEVATE" onclick="filter(this,'ELEVATE')" style="border-color:#6b21a8;color:#6b21a8;">Elevate</button>
+  <button class="fb npi" data-brand="NPI" onclick="filter(this,'NPI')" style="border-color:#92400e;color:#92400e;">NP Institute</button>
+  <button class="fb pai" data-brand="PAI" onclick="filter(this,'PAI')" style="border-color:#0369a1;color:#0369a1;">PA Institute</button>
+  <select id="segFilter" onchange="filterSeg()">
+    <option value="ALL">All Segments</option>
+    <option value="TOFU">TOFU</option>
+    <option value="MOFU">MOFU</option>
+    <option value="BOFU">BOFU</option>
+    <option value="Registrants">Registrants</option>
+    <option value="Alumni">Alumni</option>
+    <option value="Prospects">Prospects</option>
+    <option value="Local">Local</option>
+  </select>
+  <input type="text" id="search" placeholder="🔍 Search emails..." oninput="search()">
+</div>
+
+<div class="main" id="emailList"></div>
+
+<script>
+const EMAILS = [
+
+// ─────────────────────────────────────────────────────────────
+// JUNE 2026
+// ─────────────────────────────────────────────────────────────
+{
+  date:'6/23/2026', brand:'USPC', seg:'TOFU',
+  name:'Beyond Lecture Halls — Networking Opportunities',
+  subjA:'The part of Psych Congress nobody talks about',
+  subjB:'3,500 clinicians. 5 days. The conversations that change practice.',
+  preview:'What happens between sessions is worth the trip by itself.',
+  from:'Psych Congress 2026',
+  body:`The sessions are the reason you come.
+
+The hallway conversations are the reason you come back.
+
+At Psych Congress 2026, 3,500 psychiatrists, NPs, PAs, and DOs spend five days in the same building. Between sessions, at lunch, at the welcome reception — the clinical exchanges that happen are unscripted and unreplicable.
+
+Dr. [X] explains exactly what changed their approach to a TRD case. A colleague from [State] shares a protocol you've never seen in a journal. You find out a researcher down the hall is working on exactly the question you've been asking.
+
+None of that happens on a webinar.
+
+September 15–19. New Orleans. 30+ CME credits.
+
+[REGISTER NOW →]
+
+P.S. — Early-bird rates are still available. They won't be much longer.`,
+  cta:'Register Now — Psych Congress 2026',
+  note:'TOFU. Sells the in-person differential — not the sessions. Agitates the "I can get CE online" objection directly.'
+},
+{
+  date:'6/23/2026', brand:'USPC', seg:'MOFU,BOFU,Registrants',
+  name:'Networking Event Announcement',
+  subjA:'The PC2026 networking event just got a time and place',
+  subjB:'[EVENT NAME] — September [DATE], New Orleans',
+  preview:'Here\'s what\'s happening the night of [DATE].',
+  from:'Psych Congress 2026',
+  body:`[First Name],
+
+The [EVENT NAME] is confirmed.
+
+[DATE] · [TIME] · [VENUE], New Orleans
+
+This is the event where the hallway conversations become scheduled ones. Faculty stay longer. Peers you've been meaning to find are in the same room.
+
+If you're registered: it's included. [Or: add it to your registration for $X.]
+If you're not registered yet: this is part of what you're missing.
+
+[VIEW FULL EVENT DETAILS →]
+[REGISTER FOR PC2026 →]
+
+P.S. — Hotel block is filling. If you haven't booked yet, [grab a room here] before the group rate closes.`,
+  cta:'View Event Details / Register for PC2026',
+  note:'Dual CTA serves both registrants (event details) and non-registrants (conversion). Keep it short — this is an announcement, not a pitch.'
+},
+{
+  date:'6/24/2026', brand:'PCR', seg:'Prospects',
+  name:'Featured Session Announcement',
+  subjA:'Free CME: [Topic] — [Date] with [Faculty Name]',
+  subjB:'[Faculty] on [Topic] — join free on [Date]',
+  preview:'Expert faculty. Free credit. 60 minutes. Register in 30 seconds.',
+  from:'Psych Congress Regionals',
+  body:`Free CME/CE · [MONTH] session · PC Regionals 2026
+
+[SESSION TITLE]
+[DATE] · [TIME] ET · Online
+[FACULTY NAME], [CREDENTIALS], [INSTITUTION]
+
+What you'll be able to do after this session:
+→ [Specific clinical skill 1]
+→ [Specific clinical skill 2]
+→ [Specific clinical skill 3]
+
+[X.X] AMA PRA Category 1 Credits · ANCC · AAPA
+No cost. No travel. One click to register.
+
+[REGISTER FREE →]
+
+P.S. — Can't join live? Register anyway. On-demand access for 7 days post-session.`,
+  cta:'Register Free',
+  note:'Short, factual, specific. No fluff. "What you\'ll be able to do" beats "learning objectives" — outcomes-focused language.'
+},
+
+// ─────────────────────────────────────────────────────────────
+// JULY 2026
+// ─────────────────────────────────────────────────────────────
+{
+  date:'7/1/2026', brand:'USPC', seg:'Registrants',
+  name:'Hotel & Travel Reminder — Deadlines Coming',
+  subjA:'Two PC2026 deadlines this month — read this',
+  subjB:'Hotel group rate and cancellation deadline: what you need to know',
+  preview:'Both deadlines land in July. Here\'s what to do before then.',
+  from:'Psych Congress 2026',
+  body:`[First Name],
+
+Two deadlines before September that matter:
+
+1. HOTEL GROUP RATE EXPIRES [DATE]
+The conference hotel's group rate is $[X]/night — below anything you'll find on Expedia after the block closes.
+[BOOK YOUR ROOM → GROUP RATE LINK]
+
+2. CANCELLATION DEADLINE IS [DATE]
+Full refund available through [DATE]. After that, [cancellation policy].
+If anything changes before September, [DATE] is your protection.
+
+You're registered. Now lock in your room while the rate holds.
+
+[BOOK HOTEL →]
+
+P.S. — Flights to New Orleans book fast in September. Louis Armstrong International (MSY) is [X] miles from [VENUE].`,
+  cta:'Book Hotel at Group Rate',
+  note:'Registrants only. Two action items, both real deadlines. No selling needed — they\'re already in. Pure logistics value.'
+},
+{
+  date:'7/1/2026', brand:'USPC', seg:'Alumni',
+  name:'Alumni Special Discount',
+  subjA:'You\'ve attended PC before. Here\'s your 2026 rate.',
+  subjB:'PC alumni rate for 2026 — expires [DATE]',
+  preview:'Exclusive pricing before it opens to the public. Your window: [X] days.',
+  from:'Psych Congress 2026',
+  body:`You've been to Psych Congress before.
+
+We're offering alumni a registration rate for 2026 that's below what new registrants pay — before we open to the general list.
+
+Your rate: $[ALUMNI_RATE]
+Expires: [DATE]
+What's new since you last attended: [3 specific new tracks or faculty]
+
+[REGISTER AT YOUR ALUMNI RATE →]
+
+P.S. — After [DATE], public pricing applies. This window doesn't reopen.`,
+  cta:'Register at Alumni Rate',
+  note:'Short. Respects that alumni know the conference. "What\'s new" addresses the only real objection. No re-selling what they already know.'
+},
+{
+  date:'7/1/2026', brand:'USPC', seg:'2025 PAI / 2026 NPI / 2026 Elevate Attendees',
+  name:'Cross-Sell Discount — PAI/NPI/Elevate Attendees',
+  subjA:'You attended [PRIOR EVENT]. Here\'s what Psych Congress adds.',
+  subjB:'[PRIOR EVENT] attendees: special PC2026 rate inside',
+  preview:'Same faculty. 10 times the content. New Orleans in September.',
+  from:'Psych Congress 2026',
+  body:`You attended [NPI 2026 / Elevate 2026 / PA Institute 2025].
+
+Psych Congress 2026 is where the same faculty — plus 50 more — spend five days going deeper.
+
+[PRIOR EVENT] gave you [X] focused sessions on [topic].
+PC2026 gives you 100+ sessions across 10 clinical tracks, in New Orleans, September 15–19.
+
+As a [PRIOR EVENT] attendee, you qualify for a discounted registration rate: $[DISCOUNT_RATE].
+
+[REGISTER WITH YOUR CROSS-EVENT RATE →]
+
+Use code: [CODE] at checkout. Expires [DATE].
+
+P.S. — This code is specific to [PRIOR EVENT] attendees. It doesn't circulate publicly.`,
+  cta:'Register with Cross-Event Discount',
+  note:'Cross-sell pipeline from PCR, NPI, Elevate, PAI. "Same faculty — plus 50 more — going deeper" is the value prop in one line.'
+},
+{
+  date:'7/2/2026', brand:'PCR', seg:'Prospects',
+  name:'2 Weeks Away — Testimonials',
+  subjA:'What your colleagues said about PC Regionals',
+  subjB:'Real feedback. Free CME. July [DATE].',
+  preview:'3 clinicians. What they got from PCR. Why they\'re coming back.',
+  from:'Psych Congress Regionals',
+  body:`2 weeks until the July PC Regionals session.
+
+Here's what past attendees said:
+
+"This has been an incredibly insightful and educational two days. The online forum has been extremely user-friendly." — Nicole Swanson, Social Worker
+
+"I gained more than 50% knowledge understanding topics which I thought I confidently knew." — Eunice Witkus, PMHNP
+
+"I will absolutely attend Psych Congress Regionals in the future." — Laura Cunningham, PA
+
+Free. Online. July [DATE].
+
+[REGISTER FREE →]
+
+P.S. — On-demand available for 7 days if you can't join live.`,
+  cta:'Register Free',
+  note:'Testimonials do the selling. Resist the urge to add copy around them. The clinician quotes carry more weight than anything you write.'
+},
+{
+  date:'7/7/2026', brand:'USPC', seg:'TOFU',
+  name:'The Conversations Shaping Care Right Now — TOFU',
+  subjA:'What 3,500 clinicians are talking about at PC2026',
+  subjB:'The clinical questions everyone\'s asking — New Orleans has the answers',
+  preview:'TRD. ADHD comorbidity. Psychedelics. What the 2026 evidence actually says.',
+  from:'Psych Congress 2026',
+  body:`Three clinical questions your patients are bringing you right now:
+
+1. What do we do when the first-line antidepressant fails — again?
+2. Is the ADHD-mood comorbidity driving this presentation, or masking it?
+3. What do I tell patients asking about ketamine and psilocybin?
+
+These aren't edge cases. They're Tuesday-morning appointments.
+
+At Psych Congress 2026, each of these has a dedicated clinical track — multiple sessions, live faculty, answers you can use the following week.
+
+September 15–19. New Orleans. 30+ CME credits. 3,500 peers.
+
+[SEE THE FULL AGENDA →]
+[REGISTER NOW →]
+
+P.S. — Advance rates end [DATE]. After that, registration costs more.`,
+  cta:'See the Full Agenda',
+  note:'Opens with patient scenarios, not conference features. The clinician recognizes their own week in those three questions. TOFU — sell the clinical content first, the conference second.'
+},
+{
+  date:'7/7/2026', brand:'USPC', seg:'MOFU,BOFU',
+  name:'The Conversations Shaping Care Right Now — MOFU/BOFU',
+  subjA:'The sessions that are selling out first at PC2026',
+  subjB:'Which PC2026 tracks are you in? Capacity is limited.',
+  preview:'TRD. Bipolar. Psychedelics. The sessions filling fastest.',
+  from:'Psych Congress 2026',
+  body:`[First Name],
+
+The sessions filling fastest at Psych Congress 2026:
+
+→ Treatment-Resistant Depression track — 8 sessions, 4 already near capacity
+→ Psychedelic-Assisted Therapy — updated 2026 evidence, limited seating
+→ ADHD + Mood Comorbidity — new frameworks, 3 case-study sessions
+
+You've been following PC2026. These are the sessions worth showing up for.
+
+Advance rates end [DATE]. After that, [rate increase amount].
+
+[REGISTER NOW — LOCK IN YOUR RATE →]
+
+P.S. — If you're on the fence: cancellation is available through [DATE]. Register now, decide later.`,
+  cta:'Register Now — Lock In Advance Rate',
+  note:'MOFU/BOFU — these contacts know PC2026. Skip the intro. Session-specific scarcity + rate deadline + risk reversal (cancellation policy) = conversion.'
+},
+{
+  date:'7/9/2026', brand:'PCR', seg:'Prospects',
+  name:'1 Week Away — Topic Spotlight',
+  subjA:'1 week: [Topic] with [Faculty] — free CME, July [DATE]',
+  subjB:'What [Faculty] is presenting next week and why it matters',
+  preview:'The clinical case at the center of next week\'s session.',
+  from:'Psych Congress Regionals',
+  body:`1 week until the July PC Regionals session.
+
+[FACULTY NAME] is presenting on [TOPIC].
+
+Here's the case at the center of the session:
+[2–3 sentence clinical scenario — specific, realistic, directly relevant to this audience]
+
+That's the patient population this session is built around.
+
+Free. Online. July [DATE] · [TIME] ET.
+
+[REGISTER FREE →]
+
+P.S. — Already registered? Your login link is in your confirmation email. See you [DATE].`,
+  cta:'Register Free',
+  note:'Opens with a clinical case, not a topic title. "That\'s the patient population this session is built around" connects the abstract to the reader\'s reality.'
+},
+{
+  date:'7/9/2026', brand:'PCR', seg:'Registrants',
+  name:'1 Week Away — July Registrants',
+  subjA:'1 week, [First Name] — here\'s everything for July PCR',
+  subjB:'Your July PCR login, CE info, and what to expect',
+  preview:'Session details, login link, and how to claim your CE credit.',
+  from:'Psych Congress Regionals',
+  body:`[First Name], you're registered for the July PC Regionals session.
+
+Here's everything you need:
+
+SESSION: [TITLE]
+DATE: [FULL DATE] · [TIME] ET
+FACULTY: [NAME], [CREDENTIALS]
+LOGIN: [LINK — works 30 minutes before start]
+CE: [X.X] AMA PRA Category 1 · ANCC · AAPA
+
+Questions before [DATE]? Reply to this email.
+
+See you next week.`,
+  cta:'Add to Calendar',
+  note:'Registrants only. Pure logistics. No selling. The shorter this email is, the better the open rate on the day-of send will be — this one primes them for it.'
+},
+{
+  date:'7/10/2026', brand:'USPC', seg:'TOFU,MOFU,BOFU',
+  name:'2 Weeks Away — Advance Rates',
+  subjA:'Advance rates end in 2 weeks. After that: +$[X].',
+  subjB:'$[X] more in 14 days — Psych Congress 2026',
+  preview:'The rate increase is real. The deadline is July 24.',
+  from:'Psych Congress 2026',
+  body:`Advance registration for Psych Congress 2026 closes July 24.
+
+After that, the registration fee increases by $[X].
+
+What you get either way:
+→ 5 days in New Orleans, September 15–19
+→ 100+ sessions across 10 clinical tracks
+→ 30+ AMA/ANCC/AAPA-accredited CME credits
+→ 3,500 peers and 60+ faculty
+→ Cancellation through [DATE]
+
+What you save by registering before July 24: $[X].
+
+[REGISTER NOW — ADVANCE RATE →]
+
+P.S. — You can register today and cancel through [DATE] if your plans change. The rate savings don't have that flexibility.`,
+  cta:'Register Now — Advance Rate',
+  note:'All segments. Specific dollar amount. Specific date. Risk reversal built in. The final sentence is the best line — it reframes "register now" as obviously right.'
+},
+{
+  date:'7/13/2026', brand:'PCR', seg:'Registrants',
+  name:'Know Before You Go — July',
+  subjA:'Everything you need for July PCR — 3 days out',
+  subjB:'Login, CE, what to expect: July PCR 2026',
+  preview:'3 days. Here\'s your complete session guide.',
+  from:'Psych Congress Regionals',
+  body:`[First Name], 3 days until your July PC Regionals session.
+
+WHAT TO KNOW:
+
+Session: [TITLE]
+Date: [DATE] · [TIME] ET · [Platform]
+Login: [LINK] — works 30 min before
+CE: Complete post-session evaluation = instant certificate
+On-demand: Available 7 days after the session for anyone who misses live
+
+HOW TO JOIN:
+Click the login link above at [TIME] ET on [DATE]. No app needed. Works on any browser.
+
+HOW TO CLAIM CE:
+Complete the post-session survey immediately after the session. Your certificate is emailed within 24 hours.
+
+See you [DATE].`,
+  cta:'Add to Calendar / Login Link',
+  note:'Pure logistics. The more frictionless the path to attending, the higher your attendance rate. Every sentence reduces a potential dropout reason.'
+},
+{
+  date:'7/14/2026', brand:'USPC', seg:'MOFU,BOFU',
+  name:'Featured Sessions / Opening Session',
+  subjA:'The PC2026 sessions worth rearranging your schedule for',
+  subjB:'Opening session confirmed: [SPEAKER/TOPIC] — September 15',
+  preview:'The sessions that define the week. Here\'s what\'s on the agenda.',
+  from:'Psych Congress 2026',
+  body:`[First Name],
+
+The opening session of Psych Congress 2026 is confirmed:
+
+[SESSION TITLE]
+[FACULTY NAME], [CREDENTIALS]
+September 15 · [TIME] · [VENUE], New Orleans
+
+[2–3 sentence description — specific, clinical, outcome-focused. What will the clinician walk away knowing?]
+
+And three more sessions worth showing up for specifically:
+
+→ [SESSION 2]: [One line — specific clinical outcome]
+→ [SESSION 3]: [One line]
+→ [SESSION 4]: [One line]
+
+These are the sessions your colleagues will reference all year.
+
+[SEE THE FULL AGENDA →]
+[REGISTER NOW →]
+
+P.S. — Advance rates end July 24. After that: +$[X].`,
+  cta:'See the Full Agenda / Register Now',
+  note:'Session-specific copy converts better than event-generic copy for MOFU/BOFU. The opening session is an anchor — name it specifically.'
+},
+{
+  date:'7/15/2026', brand:'USPC', seg:'Registrants',
+  name:'AFSP Walk 1 — Suicide Prevention Partnership',
+  subjA:'Walk with PC2026 at the AFSP New Orleans walk',
+  subjB:'September [DATE] · AFSP Out of the Darkness Walk · New Orleans',
+  preview:'Join the PC2026 team at the AFSP walk during conference week.',
+  from:'Psych Congress 2026',
+  body:`[First Name],
+
+During Psych Congress 2026 week, we're joining the AFSP Out of the Darkness Walk in New Orleans.
+
+DATE: [DATE]
+TIME: [TIME]
+LOCATION: [LOCATION]
+
+As clinicians, this walk connects the clinical work we do all year to the community it serves. We'd like you to walk with us.
+
+[JOIN THE PC2026 AFSP TEAM →]
+
+This is separate from the conference — open to all registrants and their guests.
+
+P.S. — Not registered for PC2026 yet? [Register here]. The walk happens during conference week.`,
+  cta:'Join the PC2026 AFSP Team',
+  note:'Compliance note: No medical claims. Position as community engagement. Short — this is an invitation, not a pitch. AFSP brand guidelines must be followed in execution.'
+},
+{
+  date:'7/15/2026', brand:'PCR', seg:'Prospects',
+  name:'1 Day Away — July Prospects',
+  subjA:'Tomorrow: free CME — [Topic] with [Faculty] · [Time] ET',
+  subjB:'[Topic] · July [DATE] · Free · Starts at [Time]',
+  preview:'Tomorrow morning. One click to join.',
+  from:'Psych Congress Regionals',
+  body:`Tomorrow.
+
+[SESSION TITLE]
+[FACULTY NAME] · [CREDENTIALS]
+[DATE] · [TIME] ET · Online · Free
+
+If you haven't registered yet, you can still join:
+[REGISTER FREE →]
+
+Already registered? Your login link is in your confirmation email. See you tomorrow at [TIME].`,
+  cta:'Register Free',
+  note:'One day out. Shortest possible email. One CTA. This is a last-minute grab for people who almost registered but didn\'t. Every word counts.'
+},
+{
+  date:'7/16/2026', brand:'PCR', seg:'Registrants',
+  name:'Day 1 Morning Flash — July',
+  subjA:'Today: PCR · [Topic] · Starts at [TIME] ET',
+  subjB:'[First Name] — your session starts in [X] hours',
+  preview:'One click. You\'re in.',
+  from:'Psych Congress Regionals',
+  body:`[First Name],
+
+Today's session starts at [TIME] ET.
+
+[SESSION TITLE]
+[FACULTY NAME] · [CREDENTIALS]
+[TIME] ET · [X.X] CME Credits
+
+[JOIN NOW →]
+[Direct link — no login required]
+
+Can't make it live? On-demand for 7 days.`,
+  cta:'Join Now',
+  note:'60.88% OR benchmark. This is the format. Do not add anything. Every word beyond this reduces open and click rates.'
+},
+{
+  date:'7/17/2026', brand:'PCR', seg:'Registrants',
+  name:'Day 2 Morning Flash — July',
+  subjA:'Day 2: PCR · [Topic] · [TIME] ET today',
+  subjB:'Today\'s session — [TIME] ET — login link inside',
+  preview:'Day 2. Your login is below.',
+  from:'Psych Congress Regionals',
+  body:`Day 2.
+
+[SESSION TITLE]
+[FACULTY] · [TIME] ET · [X.X] CME Credits
+
+[JOIN NOW →]
+
+CE: Complete today's evaluation to claim your credits. Link in the platform after the session.`,
+  cta:'Join Now',
+  note:'Even shorter than Day 1. They know the format now. Cut everything that isn\'t the link.'
+},
+{
+  date:'7/17/2026', brand:'USPC', seg:'TOFU,MOFU,BOFU',
+  name:'1 Week Away — Advance Rates (2 Month Countdown)',
+  subjA:'Advance rates end in 7 days. $[X] is on the line.',
+  subjB:'7 days · $[X] more after July 24 · Psych Congress 2026',
+  preview:'July 24 is the last day to register at the advance rate.',
+  from:'Psych Congress 2026',
+  body:`Advance rates for Psych Congress 2026 close July 24. That's 7 days.
+
+After July 24, registration increases by $[X].
+
+Two months until New Orleans. Enough time to arrange CME coverage, book a room, and plan five days that change what you do in clinic the rest of the year.
+
+[REGISTER BEFORE JULY 24 →]
+
+September 15–19 · New Orleans · 30+ CME credits · 100+ sessions
+
+P.S. — Hotel group rate also closes [DATE]. [Book your room here] before both windows close.`,
+  cta:'Register Before July 24',
+  note:'Two deadlines in one email (rate + hotel) is acceptable here because they\'re both genuine and imminent. Keep them clearly separated.'
+},
+{
+  date:'7/20/2026', brand:'USPC', seg:'MOFU,BOFU',
+  name:'Advance Rates End Friday',
+  subjA:'Advance rates end Friday. After that: +$[X].',
+  subjB:'$[X] savings close Friday — Psych Congress 2026',
+  preview:'Friday is the last day at the advance rate.',
+  from:'Psych Congress 2026',
+  body:`Advance rates for Psych Congress 2026 end Friday, July 24.
+
+After Friday: $[X] more.
+
+This is the last full-week rate for PC2026. After July 24, the next price point is standard registration.
+
+[REGISTER BEFORE FRIDAY →]
+
+September 15–19 · New Orleans · 30+ CME · 100+ sessions
+
+P.S. — Cancellation available through [DATE]. Register now, you're still protected.`,
+  cta:'Register Before Friday',
+  note:'Short. Dollar amount. Day of week (Friday) is more visceral than a date. The P.S. removes the last hesitation objection.'
+},
+{
+  date:'7/20/2026', brand:'PCR', seg:'Attendees',
+  name:'Thank You for Attending — July PCR',
+  subjA:'Thank you — your July PCR CE certificate is ready',
+  subjB:'Your CE certificate + on-demand access · July PCR 2026',
+  preview:'Complete the survey to get your certificate. 3 minutes.',
+  from:'Psych Congress Regionals',
+  body:`Thank you for joining today's session on [TOPIC].
+
+Your CE certificate: complete the post-session evaluation.
+
+[COMPLETE EVALUATION → GET CE CERTIFICATE]
+
+3 minutes. Certificate delivered immediately.
+
+On-demand access: available for 7 days at [LINK].
+
+---
+
+The next PC Regionals session is [DATE]: [TOPIC].
+[REGISTER FREE →]
+
+P.S. — CE certificates expire after [X] days. Complete your evaluation today.`,
+  cta:'Complete Evaluation / Register for Next Session',
+  note:'CE urgency + next session cross-registration. Both serve the reader. The second registration CTA is low-pressure because they just had a positive experience.'
+},
+{
+  date:'7/20/2026', brand:'PCR', seg:'No Shows',
+  name:'Sorry We Missed You — July PCR',
+  subjA:'You missed the July PCR session — on-demand is still available',
+  subjB:'[X] days left to claim your free CME from July PCR',
+  preview:'On-demand access ends [DATE]. Your CE credit is still available.',
+  from:'Psych Congress Regionals',
+  body:`You registered for the July PC Regionals session but weren't able to join live.
+
+On-demand access is available for [X] more days.
+
+[ACCESS ON-DEMAND → CLAIM YOUR CE →]
+
+Complete the post-session evaluation to get your CME/CE certificate.
+
+Access expires [DATE].
+
+---
+
+Next session: [DATE] · [TOPIC]
+[REGISTER FREE →]`,
+  cta:'Access On-Demand / Register for Next Session',
+  note:'No guilt. No apology. Just access and a next step. Short.'
+},
+{
+  date:'7/21/2026', brand:'USPC', seg:'Registrants',
+  name:'Hotel & Travel — 2nd Reminder',
+  subjA:'Hotel group rate closes [DATE] — book now',
+  subjB:'Last call: PC2026 group hotel rate expires [DATE]',
+  preview:'The group rate closes [DATE]. After that, standard pricing.',
+  from:'Psych Congress 2026',
+  body:`[First Name],
+
+The PC2026 hotel group rate closes [DATE].
+
+After that, rooms at the conference hotel go to standard pricing — typically [X]% higher.
+
+[BOOK YOUR HOTEL AT THE GROUP RATE →]
+
+[HOTEL NAME] · [ADDRESS] · Group rate: $[RATE]/night
+
+Questions about travel or hotel alternatives? Reply here.`,
+  cta:'Book Hotel at Group Rate',
+  note:'Second reminder. Shorter than the first. One CTA only. The group rate closing is a real deadline — use it without embellishment.'
+},
+{
+  date:'7/22/2026', brand:'USPC', seg:'Pendings',
+  name:'Pending Registrations',
+  subjA:'Your PC2026 registration is not complete',
+  subjB:'Finish your PC2026 registration — advance rate ends July 24',
+  preview:'You started. Your spot isn\'t confirmed. 3 minutes to finish.',
+  from:'Psych Congress 2026',
+  body:`Your Psych Congress 2026 registration is incomplete.
+
+Your spot isn't confirmed until registration is finished — and advance rates end July 24.
+
+[COMPLETE YOUR REGISTRATION →]
+
+September 15–19 · New Orleans · 30+ CME · 100+ sessions
+
+Under 3 minutes from where you left off.
+
+P.S. — Any issues completing registration? Reply to this email. We'll sort it today.`,
+  cta:'Complete Your Registration',
+  note:'Pendings are your highest-converting segment. Short. Single CTA. P.S. humanizes and removes the "something went wrong" hesitation.'
+},
+{
+  date:'7/22/2026', brand:'PCR', seg:'Prospects',
+  name:'Featured Session — Late July',
+  subjA:'Free CME: [Topic] — [Date] with [Faculty]',
+  subjB:'[Faculty] on [Topic] · [Date] · Free · Online',
+  preview:'What this session covers and why it matters for your practice.',
+  from:'Psych Congress Regionals',
+  body:`Free CME/CE · PC Regionals 2026
+
+[SESSION TITLE]
+[DATE] · [TIME] ET · Online
+[FACULTY NAME], [CREDENTIALS]
+
+[2–3 sentences: what clinical problem this session solves, written in terms of the patient the clinician is already seeing]
+
+[X.X] AMA PRA Category 1 Credits · ANCC · AAPA · No cost.
+
+[REGISTER FREE →]
+
+P.S. — On-demand for 7 days if you can't attend live.`,
+  cta:'Register Free',
+  note:'Standard featured session format. Clinical problem first, session details second.'
+},
+{
+  date:'7/23/2026', brand:'USPC', seg:'TOFU,MOFU,BOFU',
+  name:'Advance Rates End Tomorrow',
+  subjA:'Tomorrow is the last day for advance rates — Psych Congress 2026',
+  subjB:'Advance rates end tomorrow, July 24. Then: +$[X].',
+  preview:'One day. $[X] on the line. Here\'s the link.',
+  from:'Psych Congress 2026',
+  body:`Tomorrow, July 24, advance registration for Psych Congress 2026 closes.
+
+After tomorrow: $[X] more.
+
+If you've been planning to register, tomorrow is the day.
+
+[REGISTER BEFORE TOMORROW →]
+
+September 15–19 · New Orleans · 30+ CME credits
+
+P.S. — Cancellation available through [DATE]. The rate savings don't extend. Register today, cancel later if needed.`,
+  cta:'Register Before Tomorrow',
+  note:'T–1 urgency. Shortest of the rate-deadline sequence. "Register today, cancel later if needed" — the most conversion-effective sentence in the rate deadline series.'
+},
+{
+  date:'7/24/2026', brand:'USPC', seg:'MOFU,BOFU',
+  name:'Advance Rates End Tonight — BOFU',
+  subjA:'Tonight: advance rates close at midnight — Psych Congress 2026',
+  subjB:'This is the last email at the advance rate.',
+  preview:'After midnight: +$[X]. Your link is here.',
+  from:'Psych Congress 2026',
+  body:`Advance rates for Psych Congress 2026 close tonight at midnight.
+
+After midnight: $[X] more.
+
+[REGISTER NOW — ADVANCE RATE LINK →]
+
+September 15–19 · New Orleans · 30+ CME credits · 60+ Faculty
+
+Rates increase at 11:59 PM tonight. This is the last email at this price.
+
+P.S. — After midnight, the registration fee increases by $[X]. This link locks in tonight's rate. Under 3 minutes to register.`,
+  cta:'Register Now — Advance Rate',
+  note:'BOFU only. This is your Elevate 59.89% OR format applied to USPC. Short. Specific dollar amount. Specific time. Do not add content.'
+},
+{
+  date:'7/28/2026', brand:'USPC', seg:'MOFU,BOFU',
+  name:'The Ultimate PC Experience',
+  subjA:'What 5 days at Psych Congress actually looks like',
+  subjB:'From the opening session to the last panel — here\'s the PC2026 experience',
+  preview:'Day by day. What happens, who\'s there, and why it\'s worth it.',
+  from:'Psych Congress 2026',
+  body:`Here's what Psych Congress 2026 looks like, day by day:
+
+MONDAY, SEPTEMBER 15
+Pre-conference workshops · Opening session · Welcome reception
+The week begins with [Opening Speaker/Topic] — the session that sets the clinical tone.
+
+TUESDAY–THURSDAY, SEPTEMBER 16–18
+100+ sessions across 10 clinical tracks. You build your own schedule.
+Peak faculty access: hallway conversations, roundtables, case discussions.
+
+FRIDAY, SEPTEMBER 19
+Final sessions · CE wrap-up · Closing remarks
+
+Every day:
+→ Morning sessions start at [TIME]
+→ CE credit tracked through the app
+→ Faculty available between sessions — not behind a green room
+
+TOTAL: 30+ AMA/ANCC/AAPA CME credits. 5 days. New Orleans.
+
+[REGISTER NOW →]
+
+P.S. — Standard rates now apply. [VIEW CURRENT RATES →]`,
+  cta:'Register Now',
+  note:'Post-advance-rate content shift. Stop selling price, start selling experience. Day-by-day structure makes the conference tangible for fence-sitters.'
+},
+{
+  date:'7/30/2026', brand:'PCR', seg:'Prospects',
+  name:'2 Weeks Away — August PCR',
+  subjA:'2 weeks: free CME — [Topic] · August [DATE]',
+  subjB:'August PCR · [Topic] with [Faculty] · Free · [Date]',
+  preview:'What\'s coming up in August and why it matters.',
+  from:'Psych Congress Regionals',
+  body:`2 weeks until the August PC Regionals session.
+
+[SESSION TITLE]
+[DATE] · [TIME] ET · Online
+[FACULTY NAME], [CREDENTIALS]
+
+[Clinical problem this session addresses — 2 sentences]
+
+Free. [X.X] CME credits. No travel.
+
+[REGISTER FREE →]
+
+P.S. — If you attended the July session, August goes deeper on [connection to July topic or complementary topic].`,
+  cta:'Register Free',
+  note:'The P.S. creates continuity for repeat attendees — makes each session feel like part of a curriculum, not a one-off.'
+},
+
+// ─────────────────────────────────────────────────────────────
+// AUGUST 2026
+// ─────────────────────────────────────────────────────────────
+{
+  date:'8/3/2026', brand:'USPC', seg:'TOFU',
+  name:'Letter from Dr. Mattingly',
+  subjA:'A note from Dr. Greg Mattingly — New Orleans, September',
+  subjB:'Something I want to share with you about PC2026',
+  preview:'In 30 years of practice, this agenda goes places most conferences won\'t.',
+  from:'Dr. Greg Mattingly, Co-Chair · Psych Congress 2026',
+  body:`In 30 years of psychiatric practice, the question I hear most often from colleagues isn't about diagnosis or billing or insurance.
+
+It's: what do I do when nothing is working?
+
+Treatment-resistant cases. ADHD presentations that don't fit the textbook. Mood disorders that cycle despite optimal medication. Patients asking about ketamine and psilocybin and whether any of it is real.
+
+The 2026 program was built around these questions. Not conceptually — specifically. Eight sessions on treatment-resistant depression alone. Four on psychedelic-assisted therapy with actual 2026 evidence. Tracks on bipolar, substance use, women's mental health, pediatric psychiatry — each built by clinicians who see these cases every week.
+
+I'll be there. I want to see you there.
+
+September 15–19. New Orleans.
+
+[VIEW THE FULL AGENDA →]
+
+Dr. Greg Mattingly
+Co-Chair, Psych Congress 2026
+Washington University School of Medicine
+
+P.S. — Standard rates apply. Registration is open.`,
+  from_note:'Faculty letter — Dr. Mattingly is the sender. This is the one place a named sender is appropriate and proven.',
+  cta:'View the Full Agenda',
+  note:'Faculty letter format. 15–20% OR benchmark from your data. Does NOT say "Join us" or "We invite you" — it speaks directly from one clinician to another. The P.S. is minimal because the letter does the conversion work.'
+},
+{
+  date:'8/6/2026', brand:'PCR', seg:'Prospects',
+  name:'1 Week Away — August Prospects',
+  subjA:'1 week: [Topic] with [Faculty] — free CME, August [DATE]',
+  subjB:'Free CME next [DAY]: [Topic] · [Time] ET',
+  preview:'One week. Register now or miss it.',
+  from:'Psych Congress Regionals',
+  body:`1 week until the August PC Regionals session.
+
+[SESSION TITLE] · [FACULTY] · [DATE] · [TIME] ET
+
+[One sentence: the clinical problem this session solves]
+
+Free. [X.X] credits. Online.
+
+[REGISTER FREE →]
+
+P.S. — On-demand access for 7 days after the session for anyone who registers and can't attend live.`,
+  cta:'Register Free',
+  note:'1 week out. Keep it tight. One clinical problem sentence is more powerful than a paragraph of session description.'
+},
+{
+  date:'8/6/2026', brand:'PCR', seg:'Registrants',
+  name:'1 Week Away — August Registrants',
+  subjA:'1 week, [First Name] — August PCR details inside',
+  subjB:'Your August PCR session is [DATE] at [TIME] ET',
+  preview:'Login link, CE info, and what to expect.',
+  from:'Psych Congress Regionals',
+  body:`[First Name], 1 week until your August PC Regionals session.
+
+Session: [TITLE]
+Date: [DATE] · [TIME] ET
+Faculty: [NAME], [CREDENTIALS]
+Login: [LINK]
+CE: [X.X] AMA/ANCC/AAPA credits via post-session evaluation
+
+See you August [DATE].`,
+  cta:'Add to Calendar',
+  note:'Pure logistics for registrants. No selling. The shorter, the better.'
+},
+{
+  date:'8/10/2026', brand:'PCR', seg:'Registrants',
+  name:'Know Before You Go — August',
+  subjA:'Everything for August PCR — 3 days out',
+  subjB:'August PCR: login, CE, and what to expect',
+  preview:'3 days. Everything you need in one email.',
+  from:'Psych Congress Regionals',
+  body:`[First Name], 3 days until your August PC Regionals session.
+
+Session: [TITLE]
+Date: [DATE] · [TIME] ET
+Login: [LINK — works 30 min before]
+CE: Complete post-session evaluation after the session = instant certificate
+On-demand: 7 days post-session at [LINK]
+
+See you August [DATE].`,
+  cta:'Add to Calendar',
+  note:'Same format as July KBYG. Consistency builds trust and expectation. Registrants who know what to expect attend at higher rates.'
+},
+{
+  date:'8/11/2026', brand:'USPC', seg:'Registrants',
+  name:'AFSP Walk 2 — Reminder',
+  subjA:'AFSP walk reminder — September [DATE], New Orleans',
+  subjB:'Walking with PC2026? Here\'s what you need.',
+  preview:'Details for the AFSP Out of the Darkness Walk during conference week.',
+  from:'Psych Congress 2026',
+  body:`[First Name], a reminder about the AFSP Out of the Darkness Walk during PC2026 week.
+
+Date: [DATE]
+Time: [TIME]
+Location: [LOCATION]
+Team: [TEAM LINK]
+
+If you haven't joined the team yet: [JOIN HERE].
+If you already have: see you there.`,
+  cta:'Join the AFSP Team',
+  note:'Second reminder. Even shorter than the first. These are registered attendees — they don\'t need to be convinced of anything.'
+},
+{
+  date:'8/12/2026', brand:'USPC', seg:'Local Prospects',
+  name:'Program Overview / Local Offer',
+  subjA:'Psych Congress 2026 is in your backyard — here\'s what that means',
+  subjB:'You\'re [X] miles from PC2026 · No hotel required · Register now',
+  preview:'Local pricing. No hotel. Same content as the national conference.',
+  from:'Psych Congress 2026',
+  body:`Psych Congress 2026 is at [VENUE] in New Orleans. Based on your location, you're within driving distance.
+
+That changes the math.
+
+No flights. No hotel. No travel budget approval. Drive in, earn 30+ CME credits, drive home.
+
+Local attendee rate: $[LOCAL_RATE] [or: Standard rate applies — no hotel or flight cost is the savings]
+
+What you get:
+→ All 5 days — or pick the sessions you need
+→ 30+ AMA/ANCC/AAPA credits
+→ 100+ sessions, 60+ faculty
+→ 1-day passes available for $[RATE]
+
+[REGISTER — LOCAL ATTENDEE →]
+
+September 15–19 · [VENUE] · [ADDRESS], New Orleans
+
+P.S. — 1-day passes are available if you can only commit to part of the week. [SEE DAY PASS OPTIONS →]`,
+  cta:'Register — Local Attendee',
+  note:'Geo-targeted. "No hotel required" removes the #1 barrier. 1-day pass option opens the door for local clinicians who can\'t take a full week.'
+},
+{
+  date:'8/12/2026', brand:'USPC', seg:'MOFU,BOFU',
+  name:'Featured Sessions',
+  subjA:'The 4 PC2026 sessions your colleagues are building their schedules around',
+  subjB:'These are the sessions. Here\'s why they matter.',
+  preview:'Four sessions worth planning your week around.',
+  from:'Psych Congress 2026',
+  body:`Four sessions at Psych Congress 2026 worth planning your week around:
+
+[SESSION 1 TITLE] · [FACULTY] · [DATE/TIME]
+[One sentence — what you'll walk away knowing]
+
+[SESSION 2 TITLE] · [FACULTY] · [DATE/TIME]
+[One sentence]
+
+[SESSION 3 TITLE] · [FACULTY] · [DATE/TIME]
+[One sentence]
+
+[SESSION 4 TITLE] · [FACULTY] · [DATE/TIME]
+[One sentence]
+
+These aren't previews. They're the sessions.
+
+[SEE THE FULL AGENDA →]
+[REGISTER NOW →]
+
+P.S. — Less than [X] days until standard rates increase again. Current rate: $[RATE].`,
+  cta:'See the Full Agenda / Register Now',
+  note:'Four specific sessions is the right number — enough to be compelling, few enough to be scannable. Every session needs a one-sentence outcome, not a description.'
+},
+{
+  date:'8/12/2026', brand:'PCR', seg:'Prospects',
+  name:'1 Day Away — August Prospects',
+  subjA:'Tomorrow: free CME — [Topic] · [Time] ET',
+  subjB:'[DATE]: [Topic] · Free · Join tomorrow at [Time]',
+  preview:'Tomorrow. One click.',
+  from:'Psych Congress Regionals',
+  body:`Tomorrow.
+
+[SESSION TITLE]
+[FACULTY] · [TIME] ET · Free
+
+[REGISTER FREE →]
+
+Already registered? Your login link is in your confirmation email.`,
+  cta:'Register Free',
+  note:'One day out. Three sentences maximum. If they haven\'t registered yet, give them every reason to do it in 5 seconds.'
+},
+{
+  date:'8/13/2026', brand:'PCR', seg:'Registrants',
+  name:'Day 1 Morning Flash — August',
+  subjA:'Today: PCR · [Topic] · [TIME] ET',
+  subjB:'Your August session starts at [TIME] ET today',
+  preview:'One click. You\'re in.',
+  from:'Psych Congress Regionals',
+  body:`Today's session starts at [TIME] ET.
+
+[SESSION TITLE]
+[FACULTY] · [TIME] ET · [X.X] CME Credits
+
+[JOIN NOW →]
+
+On-demand for 7 days if you miss the live session.`,
+  cta:'Join Now',
+  note:'Day-of format. Non-negotiable 60.88% OR formula. No additions.'
+},
+{
+  date:'8/14/2026', brand:'PCR', seg:'Registrants',
+  name:'Day 2 Morning Flash — August',
+  subjA:'Day 2: [Topic] · [TIME] ET · August PCR',
+  subjB:'August PCR Day 2 — join at [TIME] ET today',
+  preview:'Day 2. Your link is below.',
+  from:'Psych Congress Regionals',
+  body:`Day 2.
+
+[SESSION TITLE]
+[FACULTY] · [TIME] ET · [X.X] Credits
+
+[JOIN NOW →]
+
+CE: Complete today's post-session evaluation for your certificate.`,
+  cta:'Join Now',
+  note:'Day 2 is always shorter than Day 1. They\'re primed. Just give them the link.'
+},
+{
+  date:'8/17/2026', brand:'USPC', seg:'All',
+  name:'1 Month Countdown',
+  subjA:'1 month until Psych Congress 2026 · New Orleans',
+  subjB:'September 15 is 4 weeks away. Here\'s where things stand.',
+  preview:'Registered: here\'s what\'s next. Not yet: here\'s your last real window.',
+  from:'Psych Congress 2026',
+  body:`Psych Congress 2026 is 4 weeks away.
+
+IF YOU'RE REGISTERED:
+→ Hotel group rate closes [DATE] — [BOOK HERE] if you haven't
+→ Download the app: [APP LINK] — your schedule, CE tracking, faculty bios
+→ KBYG guide arriving [DATE]
+
+IF YOU'RE NOT REGISTERED:
+Standard rates apply. September 15 is 4 weeks out.
+[REGISTER NOW →]
+
+September 15–19 · New Orleans · 30+ CME credits
+
+P.S. — 1-day passes are available for local attendees or anyone who can only come for part of the week. [SEE OPTIONS →]`,
+  cta:'Register Now / Book Hotel / Download App',
+  note:'All segments. Branches by registration status. Keeps both audiences in one send without alienating either. Clean separation between the two tracks.'
+},
+{
+  date:'8/17/2026', brand:'PCR', seg:'Attendees',
+  name:'Thank You — August PCR',
+  subjA:'Thank you — your August PCR CE certificate is ready',
+  subjB:'CE certificate + on-demand · August PCR 2026',
+  preview:'Survey = certificate. 3 minutes.',
+  from:'Psych Congress Regionals',
+  body:`Thank you for joining today's session on [TOPIC].
+
+CE certificate: complete the post-session evaluation.
+
+[COMPLETE EVALUATION → GET CE CERTIFICATE]
+
+On-demand: [LINK] · 7 days
+
+Next session: [DATE] · [TOPIC]
+[REGISTER FREE →]
+
+P.S. — CE expires after [X] days. Complete your evaluation today.`,
+  cta:'Complete Evaluation / Register for Next Session',
+  note:'Same format as July thank-you. Consistency is intentional.'
+},
+{
+  date:'8/17/2026', brand:'PCR', seg:'No Shows',
+  name:'Sorry We Missed You — August',
+  subjA:'Missed August PCR — on-demand available for [X] more days',
+  subjB:'August PCR on-demand: your free CME is still available',
+  preview:'Access ends [DATE]. Your CE is still claimable.',
+  from:'Psych Congress Regionals',
+  body:`You registered for the August PC Regionals session but couldn't join live.
+
+On-demand access: [X] days remaining.
+
+[ACCESS ON-DEMAND → CLAIM CE →]
+
+Access expires [DATE].
+
+Next session: [DATE] · [TOPIC]
+[REGISTER FREE →]`,
+  cta:'Access On-Demand',
+  note:'No guilt language. Direct. Two CTAs: claim what they missed + sign up for the next one.'
+},
+
+// ─────────────────────────────────────────────────────────────
+// SEPTEMBER 2026
+// ─────────────────────────────────────────────────────────────
+{
+  date:'8/25/2026', brand:'PCR', seg:'Prospects',
+  name:'What Your Colleagues Are Saying — 2 Meetings Left',
+  subjA:'2 PCR sessions left in 2026 — here\'s what your colleagues said',
+  subjB:'Real feedback. 2 free sessions left this year.',
+  preview:'What attendees said. October and November still open.',
+  from:'Psych Congress Regionals',
+  body:`Two PC Regionals sessions left in 2026.
+
+Here's what attendees said this year:
+
+"This has been an incredibly insightful and educational two days." — Nicole Swanson, Social Worker
+
+"I gained more than 50% knowledge understanding topics which I thought I confidently knew." — Eunice Witkus, PMHNP
+
+October: [DATE] · [TOPIC]
+November: [DATE] · [TOPIC]
+
+Free. Online. Register for one or both.
+
+[REGISTER FOR OCTOBER →]
+[REGISTER FOR NOVEMBER →]`,
+  cta:'Register for October / Register for November',
+  note:'Late August. Two sessions, two CTAs. Testimonials do the work. Allowing registration for both sessions in one email increases total registrations.'
+},
+{
+  date:'9/1/2026', brand:'USPC', seg:'All',
+  name:'National Suicide Prevention Month — AFSP Partnership',
+  subjA:'September is National Suicide Prevention Month',
+  subjB:'Psych Congress 2026 · New Orleans · Suicide prevention resources',
+  preview:'Resources, research, and what PC2026 is doing this September.',
+  from:'Psych Congress 2026',
+  body:`September is National Suicide Prevention Month.
+
+As clinicians working in psychiatric and mental health care, this month is personal.
+
+At Psych Congress 2026 this September in New Orleans, [specific suicide prevention session or programming] is part of the clinical agenda.
+
+We're also participating in the AFSP Out of the Darkness Walk on [DATE]. If you're attending PC2026 and want to walk with us: [JOIN TEAM →]
+
+Resources:
+→ 988 Suicide and Crisis Lifeline: call or text 988
+→ AFSP: afsp.org
+→ Zero Suicide Institute: zerosuicide.edc.org
+
+[REGISTER FOR PC2026 →]
+
+P.S. — If you or someone you know is in crisis: call or text 988. Help is available.`,
+  cta:'Join AFSP Team / Register for PC2026',
+  note:'Compliance critical: accurate resource information, no clinical claims, AFSP brand partnership guidelines must be followed. P.S. crisis line is non-negotiable on this send type.'
+},
+{
+  date:'9/2/2026', brand:'USPC', seg:'Local Prospects',
+  name:'2 Weeks Away — Local Discount / 1 Day Passes',
+  subjA:'2 weeks · PC2026 is in New Orleans · Local options available',
+  subjB:'1-day passes · Local rate · No hotel · September 15',
+  preview:'Local options for New Orleans-area clinicians. 2 weeks out.',
+  from:'Psych Congress 2026',
+  body:`Psych Congress 2026 starts September 15 — 2 weeks away.
+
+If you're in the New Orleans area and haven't registered:
+
+OPTIONS:
+→ Full conference registration: $[RATE] — all 5 days, 30+ CME credits
+→ 1-day pass: $[DAY_RATE] — choose any single day
+→ No hotel required for either
+
+[REGISTER FOR FULL CONFERENCE →]
+[SEE 1-DAY PASS OPTIONS →]
+
+[VENUE] · [ADDRESS] · New Orleans
+
+P.S. — 1-day passes have limited availability. [Check what's still open here].`,
+  cta:'Register / See 1-Day Passes',
+  note:'Local 2-weeks-out. 1-day pass is a critical conversion tool for local clinicians who want to dip their toe in before committing to a full week.'
+},
+{
+  date:'9/2/2026', brand:'USPC', seg:'Registrants',
+  name:'Download the Mobile App',
+  subjA:'The PC2026 app is live — download it now',
+  subjB:'Your conference schedule, CE tracking, and faculty bios: download the app',
+  preview:'Your schedule. CE tracking. Faculty access. All in one place.',
+  from:'Psych Congress 2026',
+  body:`[First Name], the Psych Congress 2026 app is live.
+
+Download it now:
+[iOS → APP STORE LINK]
+[Android → GOOGLE PLAY LINK]
+
+What's in the app:
+→ Your personalized schedule — build it before you arrive
+→ CE credit tracking — log sessions as you go
+→ Faculty bios and contact info
+→ Venue maps and session rooms
+→ Real-time schedule updates
+
+Your CE certificate is tracked through the app. Download it before September 15.
+
+[DOWNLOAD THE APP →]`,
+  cta:'Download the App',
+  note:'Registrants only. App download drives CE completion rates and reduces no-shows (people who have the app feel more committed). Make the links obvious.'
+},
+{
+  date:'9/3/2026', brand:'PCR', seg:'Prospects',
+  name:'Topic Spotlight — September PCR',
+  subjA:'Free CME: [Topic] — September [DATE] with [Faculty]',
+  subjB:'[Faculty] on [Topic] · September [DATE] · Free',
+  preview:'What this session covers and why it matters now.',
+  from:'Psych Congress Regionals',
+  body:`Free CME/CE · September · PC Regionals 2026
+
+[SESSION TITLE]
+[DATE] · [TIME] ET · Online
+[FACULTY NAME], [CREDENTIALS]
+
+[2 sentences: the clinical problem, the patient scenario this answers]
+
+[X.X] CME credits. No cost. Online.
+
+[REGISTER FREE →]
+
+P.S. — This is one of 2 PCR sessions left in 2026. [REGISTER FOR THE NOVEMBER SESSION TOO →]`,
+  cta:'Register Free',
+  note:'P.S. plants the seed for November registration — multiple-event conversion at no cost.'
+},
+{
+  date:'9/6/2026', brand:'USPC', seg:'All',
+  name:'Suicide Prevention Week',
+  subjA:'Suicide Prevention Week · September 6–12',
+  subjB:'Suicide Prevention Week · Resources for clinicians',
+  preview:'Clinical resources and PC2026 programming for suicide prevention.',
+  from:'Psych Congress 2026',
+  body:`This week is National Suicide Prevention Week.
+
+For clinicians working in psychiatric and mental health settings, this isn't awareness — it's your practice.
+
+Resources:
+→ 988 Suicide and Crisis Lifeline: call or text 988
+→ Zero Suicide Institute: zerosuicide.edc.org
+→ American Foundation for Suicide Prevention: afsp.org
+
+At PC2026 this September, [specific programming or session related to suicide prevention].
+
+[SEE PC2026 PROGRAMMING →]
+
+If you're not yet registered and the clinical work on suicide prevention is part of your practice: PC2026 has a track for this.
+
+[REGISTER →]
+
+P.S. — If you or someone you know is in crisis: call or text 988.`,
+  cta:'See PC2026 Programming / Register',
+  note:'Same compliance requirements as September 1 send. P.S. crisis line is mandatory.'
+},
+{
+  date:'9/8/2026', brand:'USPC', seg:'Registrants',
+  name:'KBYG 1 — Know Before You Go',
+  subjA:'Everything you need for Psych Congress 2026 — read this before you pack',
+  subjB:'PC2026 Know Before You Go — your complete guide',
+  preview:'Badge pickup, app, hotel, sessions, CE, New Orleans recommendations.',
+  from:'Psych Congress 2026',
+  body:`[First Name], Psych Congress 2026 starts in 1 week.
+
+Here's everything you need:
+
+GETTING THERE
+Venue: [VENUE NAME], [ADDRESS], New Orleans, LA
+Airport: Louis Armstrong International (MSY) · [X] miles from venue
+Recommended arrival: Sunday, September 14
+
+BADGE PICKUP
+Sunday, September 14: [TIME]–[TIME]
+Monday–Friday: From [TIME] daily
+
+THE APP
+Download it if you haven't: [iOS LINK] · [ANDROID LINK]
+Build your schedule in the app before you arrive.
+
+CE CREDITS
+[X]+ AMA PRA Category 1 / ANCC / AAPA credits available
+Track via the app. Complete post-session evaluations for your certificate.
+Certificate available within [X] business days of program close.
+
+SESSIONS
+[LINK TO FULL SCHEDULE]
+[Top 5 must-see sessions — specific titles, faculty, times]
+
+NEW ORLEANS
+[3 restaurant recommendations near the venue]
+[1 thing worth doing if you have a free evening]
+
+[DOWNLOAD THE FULL KBYG GUIDE →]
+
+See you September 15.
+
+P.S. — Questions? Reply to this email. We're here through the week.`,
+  cta:'Download KBYG Guide / View Full Schedule',
+  note:'Your highest-click registrant email. KBYG benchmark: 40–55% OR, 15–25% CTR. Every link is actionable. The New Orleans tips make it feel like a personal note, not a corporate email.'
+},
+{
+  date:'9/8/2026', brand:'USPC', seg:'MOFU,BOFU',
+  name:'1 Week Away — Last Chance',
+  subjA:'1 week until Psych Congress 2026 · This is the last call',
+  subjB:'September 15 is 7 days away. Registration is still open.',
+  preview:'If you\'ve been thinking about it, this is the week to decide.',
+  from:'Psych Congress 2026',
+  body:`Psych Congress 2026 starts September 15. That's 7 days.
+
+If you've been following along and haven't registered: this is the last realistic window.
+
+Registration is still open. Walk-up registration will be available on-site, but it costs more and requires planning your travel without knowing your session access.
+
+Register now. Arrive with a confirmed spot, a hotel room, and a schedule built in the app.
+
+[REGISTER NOW →]
+
+September 15–19 · New Orleans · 30+ CME credits
+
+P.S. — On-site registration: [RATE]. Online registration today: [RATE]. The difference is [AMOUNT].`,
+  cta:'Register Now',
+  note:'Last-chance for MOFU/BOFU. Frame online vs. on-site pricing as a concrete savings amount. "The difference is [AMOUNT]" is more powerful than "save money by registering online."'
+},
+{
+  date:'9/8/2026', brand:'USPC', seg:'Local Prospects',
+  name:'1 Week Away — Last Chance Local + 1 Day Passes',
+  subjA:'1 week · New Orleans · 1-day passes still available',
+  subjB:'Last week for PC2026 local options — 1-day passes available',
+  preview:'1-day passes. Local rate. No hotel. 1 week away.',
+  from:'Psych Congress 2026',
+  body:`Psych Congress 2026 is 1 week away.
+
+For New Orleans-area clinicians, 1-day passes are still available.
+
+Choose any day:
+Monday, September 15: [Session highlights]
+Tuesday, September 16: [Session highlights]
+Wednesday, September 17: [Session highlights]
+Thursday, September 18: [Session highlights]
+Friday, September 19: [Session highlights]
+
+1-day pass: $[RATE] · No hotel required · [X] CME credits per day
+
+[SEE 1-DAY PASS OPTIONS →]
+
+Or register for the full week at $[RATE] and earn 30+ credits.
+
+[FULL REGISTRATION →]`,
+  cta:'See 1-Day Passes / Full Registration',
+  note:'Day-by-day pass breakdown makes the decision concrete. Local clinicians often don\'t know which day to pick — giving them session highlights per day makes the decision easy.'
+},
+{
+  date:'9/10/2026', brand:'USPC', seg:'All',
+  name:'World Suicide Prevention Day — AFSP Partnership',
+  subjA:'World Suicide Prevention Day · September 10',
+  subjB:'September 10 · World Suicide Prevention Day · Resources for clinicians',
+  preview:'Resources and recognition for clinicians on the front line.',
+  from:'Psych Congress 2026',
+  body:`September 10 is World Suicide Prevention Day.
+
+For the clinicians on this list: the work you do every day is part of this.
+
+Resources:
+→ 988 Suicide and Crisis Lifeline: call or text 988
+→ AFSP: afsp.org
+→ Zero Suicide Institute: zerosuicide.edc.org
+
+Psych Congress 2026 opens in 5 days. If you'll be in New Orleans, the AFSP walk is [DATE] — [JOIN TEAM →]
+
+P.S. — If you or someone you know is in crisis: call or text 988.`,
+  cta:'Join AFSP Team / Register for PC2026',
+  note:'Shortest of the three AFSP sends. Five days before the conference — registrants and prospects both get this. The walk is imminent. No selling needed.'
+},
+{
+  date:'9/12/2026', brand:'USPC', seg:'Registrants (Non-Opens)',
+  name:'KBYG 2 — Resend to Non-Opens',
+  subjA:'Resend: your PC2026 guide — September 15 is 3 days away',
+  subjB:'3 days, [First Name] — your Psych Congress 2026 guide',
+  preview:'Badge pickup, app, hotel, CE — everything before Saturday.',
+  from:'Psych Congress 2026',
+  body:`[First Name], 3 days until Psych Congress 2026.
+
+If you missed last week's guide, here's what you need:
+
+Badge pickup: Sunday, September 14 starting [TIME]
+App: [DOWNLOAD LINK] — build your schedule before you arrive
+Hotel check-in: [HOTEL NAME] · [ADDRESS]
+CE: Tracked through the app · Complete post-session evaluations
+
+[FULL KBYG GUIDE →]
+[FULL SCHEDULE →]
+
+See you Saturday.`,
+  cta:'Download KBYG Guide',
+  note:'Resend to non-opens only. Shorter subject line, different preview text. Registrants who haven\'t read the KBYG are less prepared and more likely to no-show — this recovers them.'
+},
+{
+  date:'9/14/2026', brand:'USPC', seg:'Registrants',
+  name:'Welcome to New Orleans',
+  subjA:'Welcome to New Orleans — Psych Congress 2026 starts tomorrow',
+  subjB:'Tomorrow. New Orleans. Here\'s what to know for Day 1.',
+  preview:'Badge pickup tonight, first session tomorrow. Everything you need.',
+  from:'Psych Congress 2026',
+  body:`[First Name], you're in New Orleans.
+
+Tomorrow, Psych Congress 2026 begins.
+
+TONIGHT:
+Badge pickup open [TIME]–[TIME] · [LOCATION]
+Pick up your badge tonight to skip the Monday morning line.
+
+TOMORROW — MONDAY, SEPTEMBER 15:
+[OPENING SESSION TITLE] · [TIME] · [ROOM]
+[Faculty] · [One sentence on the session]
+Registration opens at [TIME] for Monday walk-ins.
+
+THE APP:
+[DOWNLOAD LINK] if you haven't already. Your session schedule and CE tracking live here.
+
+See you in the morning.`,
+  cta:'Download App / View Day 1 Schedule',
+  note:'Welcome to New Orleans email. No selling. Pure logistics. Warm tone. The phrase "See you in the morning" earns an emotional close.'
+},
+{
+  date:'9/15/2026', brand:'USPC', seg:'Registrants',
+  name:'Welcome to Day 1',
+  subjA:'Good morning from New Orleans — Day 1 of Psych Congress 2026',
+  subjB:'Day 1. Psych Congress 2026 starts now.',
+  preview:'Today\'s sessions, your CE tracking, and tonight\'s welcome reception.',
+  from:'Psych Congress 2026',
+  body:`Day 1. Psych Congress 2026.
+
+TODAY:
+Opening session: [TIME] · [ROOM] · [SPEAKER/TOPIC]
+CE tracking: via the app or [PORTAL LINK]
+Welcome reception: [TIME] · [LOCATION]
+
+[VIEW TODAY'S FULL SCHEDULE →]
+
+See you out there.`,
+  cta:'View Today\'s Schedule',
+  note:'Day 1 morning email. Short. Warm. One schedule link. This is a hospitality email, not a marketing email — treat it as such.'
+},
+{
+  date:'9/15/2026', brand:'PCR', seg:'Prospects',
+  name:'Featured Session — September PCR',
+  subjA:'Free CME: [Topic] — September [DATE] with [Faculty]',
+  subjB:'[Topic] · Free · September [DATE] · Register now',
+  preview:'Free CE this September. One click to register.',
+  from:'Psych Congress Regionals',
+  body:`Free CME/CE · September · PC Regionals 2026
+
+[SESSION TITLE]
+[DATE] · [TIME] ET
+[FACULTY], [CREDENTIALS]
+
+[Clinical problem this session solves — 2 sentences]
+
+[X.X] Credits. Free. Online.
+
+[REGISTER FREE →]
+
+P.S. — 2 PCR sessions left in 2026. [Register for November too →]`,
+  cta:'Register Free',
+  note:'Sent during PC2026 week — separate audience (PCR prospects vs PC2026 registrants). No conflict.'
+},
+{
+  date:'9/16/2026', brand:'USPC', seg:'Registrants',
+  name:'Welcome to Day 2',
+  subjA:'Good morning — Day 2 of Psych Congress 2026',
+  subjB:'Day 2. Here\'s what\'s on today.',
+  preview:'Today\'s sessions and what\'s happening tonight.',
+  from:'Psych Congress 2026',
+  body:`Day 2. Good morning.
+
+TODAY'S HIGHLIGHTS:
+[SESSION 1] · [TIME] · [ROOM]
+[SESSION 2] · [TIME] · [ROOM]
+[SESSION 3] · [TIME] · [ROOM]
+
+[TONIGHT: Optional event/reception/dinner if applicable]
+
+[VIEW TODAY'S FULL SCHEDULE →]
+
+CE reminder: log your session attendance in the app or at [PORTAL].`,
+  cta:'View Today\'s Schedule',
+  note:'Days 2–5 follow the same format. Session highlights specific to that day. CE reminder gets shorter and simpler each day.'
+},
+{
+  date:'9/17/2026', brand:'USPC', seg:'Registrants',
+  name:'Welcome to Day 3',
+  subjA:'Day 3 — Psych Congress 2026',
+  subjB:'Day 3. Midweek. Here\'s what\'s on.',
+  preview:'Midweek highlights and tonight\'s agenda.',
+  from:'Psych Congress 2026',
+  body:`Day 3. Midweek at Psych Congress 2026.
+
+TODAY'S HIGHLIGHTS:
+[SESSION 1] · [TIME] · [ROOM]
+[SESSION 2] · [TIME] · [ROOM]
+[SESSION 3] · [TIME] · [ROOM]
+
+[VIEW TODAY'S FULL SCHEDULE →]
+
+CE reminder: you're halfway through the week. [CHECK YOUR CE PROGRESS →]`,
+  cta:'View Today\'s Schedule / Check CE Progress',
+  note:'Day 3 is midweek slump prevention. CE progress check is a smart addition — it reinforces why they\'re there and motivates attendance for the second half.'
+},
+{
+  date:'9/18/2026', brand:'USPC', seg:'Registrants',
+  name:'Welcome to Day 4',
+  subjA:'Day 4 — one more day after this',
+  subjB:'Day 4. Psych Congress 2026. Almost there.',
+  preview:'Today\'s sessions and how to finish strong.',
+  from:'Psych Congress 2026',
+  body:`Day 4. One more after this.
+
+TODAY'S HIGHLIGHTS:
+[SESSION 1] · [TIME] · [ROOM]
+[SESSION 2] · [TIME] · [ROOM]
+[SESSION 3] · [TIME] · [ROOM]
+
+[VIEW TODAY'S FULL SCHEDULE →]
+
+CE reminder: complete your post-session evaluations for sessions you've attended. Evaluations close [X] days after the conference ends.`,
+  cta:'View Today\'s Schedule',
+  note:'"One more after this" creates anticipation for Day 5 and reinforces that they\'re almost done with their CE requirement — a positive reframe.'
+},
+{
+  date:'9/19/2026', brand:'USPC', seg:'Registrants',
+  name:'Welcome to Day 5',
+  subjA:'Day 5 — last day of Psych Congress 2026',
+  subjB:'Last day. Day 5. Make it count.',
+  preview:'Final sessions, CE completion, and see you next year.',
+  from:'Psych Congress 2026',
+  body:`Last day.
+
+TODAY'S HIGHLIGHTS:
+[SESSION 1] · [TIME] · [ROOM]
+[SESSION 2] · [TIME] · [ROOM]
+Closing session: [TIME] · [ROOM]
+
+[VIEW TODAY'S FULL SCHEDULE →]
+
+CE reminder: post-session evaluations must be completed within [X] days of the conference close. Complete them now while the content is fresh.
+
+[COMPLETE YOUR CE EVALUATIONS →]
+
+Safe travels home. See you next year.`,
+  cta:'View Schedule / Complete CE Evaluations',
+  note:'"See you next year" is your first alumni conversion touchpoint. It\'s placed here because the emotional high of the final day is the strongest moment to plant that seed.'
+},
+{
+  date:'9/21/2026', brand:'USPC', seg:'Registrants',
+  name:'Thank You for Attending',
+  subjA:'Thank you for being part of Psych Congress 2026',
+  subjB:'PC2026 is a wrap · Your CE certificate + what\'s next',
+  preview:'CE certificate, on-demand access, and what\'s coming in 2027.',
+  from:'Psych Congress 2026',
+  body:`Thank you for attending Psych Congress 2026.
+
+YOUR CE CERTIFICATE:
+Complete your post-session evaluations at [PORTAL LINK] to generate your certificate.
+Deadline: [DATE] · Evaluations close after that.
+
+[COMPLETE EVALUATIONS → GET CERTIFICATE →]
+
+ON-DEMAND ACCESS:
+All sessions are available on-demand through [DATE].
+[ACCESS ON-DEMAND →]
+
+WHAT'S NEXT:
+Post-event survey: [LINK] · Takes 5 minutes · Shapes next year's program
+Psych Congress 2027: early-bird registration opens [DATE] — we'll reach out when it's ready.
+
+Thank you for the work you do.`,
+  cta:'Complete Evaluations / Access On-Demand',
+  note:'57.29% OR benchmark from PAI post-event data. CE urgency + on-demand access + 2027 pipeline. "Thank you for the work you do" is the close — it honors the audience without being saccharine.'
+},
+
+// ─────────────────────────────────────────────────────────────
+// OCTOBER 2026
+// ─────────────────────────────────────────────────────────────
+{
+  date:'9/24/2026', brand:'PCR', seg:'Prospects',
+  name:'2 Weeks Away — October PCR',
+  subjA:'2 weeks: free CME — [Topic] · October [DATE]',
+  subjB:'October PCR · [Topic] · Free · [Date]',
+  preview:'2 weeks. Register now.',
+  from:'Psych Congress Regionals',
+  body:`2 weeks until the October PC Regionals session.
+
+[SESSION TITLE]
+[DATE] · [TIME] ET · Online
+[FACULTY], [CREDENTIALS]
+
+[Clinical scenario — 1–2 sentences]
+
+Free. [X.X] credits.
+
+[REGISTER FREE →]
+
+P.S. — This is 1 of 2 PCR sessions left in 2026.`,
+  cta:'Register Free',
+  note:'Scarcity without pressure: "1 of 2 sessions left in 2026" is true and motivating.'
+},
+{
+  date:'9/28/2026', brand:'USPC', seg:'Registrants',
+  name:'Post-Event Survey Reminder',
+  subjA:'Post-event survey · CE certificates closing [DATE]',
+  subjB:'Complete your PC2026 survey · CE deadline: [DATE]',
+  preview:'5 minutes. Your CE certificate depends on it.',
+  from:'Psych Congress 2026',
+  body:`[First Name], a reminder on two things:
+
+1. POST-EVENT SURVEY
+Your feedback shapes next year's program.
+[COMPLETE THE SURVEY → 5 MINUTES →]
+
+2. CE CERTIFICATES
+Evaluations close [DATE]. After that, certificates cannot be issued.
+If you have sessions still outstanding: [COMPLETE YOUR EVALUATIONS →]
+
+Thank you again for being part of PC2026.`,
+  cta:'Complete Survey / Complete CE Evaluations',
+  note:'CE deadline is real urgency. The survey completion drives testimonials for future marketing. Both are high-value CTAs for this segment.'
+},
+{
+  date:'10/1/2026', brand:'USPC', seg:'All',
+  name:'ADHD Awareness Month + Depression Awareness Month',
+  subjA:'October: ADHD and Depression Awareness Month',
+  subjB:'October awareness · Resources for clinicians · What\'s next from PC',
+  preview:'Clinical resources for the two conditions your patients are bringing most.',
+  from:'Psych Congress 2026',
+  body:`October is both ADHD Awareness Month and Depression Awareness Month.
+
+For clinicians in psychiatric and behavioral health settings: these aren't abstract observances. They're your caseload.
+
+Resources:
+→ CHADD (ADHD): chadd.org
+→ NAMI: nami.org
+→ ADAA: adaa.org
+
+What's coming next from Psych Congress:
+→ PC2027 early-bird registration: opening [DATE]
+→ PC Regionals: 2 free sessions remaining in 2026 — [REGISTER →]
+
+P.S. — If your patients are asking about ADHD and mood comorbidity, the PCR October session on [DATE] covers exactly this. [Register free →]`,
+  cta:'Register for PCR / Learn about PC2027',
+  note:'Calendar email that earns its place by being useful — real resource links, not generic awareness messaging. Cross-sell to PCR October is appropriate and relevant.'
+},
+{
+  date:'10/1/2026', brand:'PCR', seg:'Prospects',
+  name:'1 Week Away — October Prospects',
+  subjA:'1 week: [Topic] · Free CME · October [DATE]',
+  subjB:'Free CME next [DAY]: [Topic] · [Time] ET',
+  preview:'One week. Register if you haven\'t.',
+  from:'Psych Congress Regionals',
+  body:`1 week until the October PC Regionals session.
+
+[SESSION TITLE] · [FACULTY] · [DATE] · [TIME] ET
+
+[One clinical sentence]
+
+Free. [X.X] credits.
+
+[REGISTER FREE →]`,
+  cta:'Register Free',
+  note:'1 week out. Three sentences and a link.'
+},
+{
+  date:'10/1/2026', brand:'PCR', seg:'Registrants',
+  name:'1 Week Away — October Registrants',
+  subjA:'1 week, [First Name] — October PCR details',
+  subjB:'October PCR: [DATE] · [TIME] ET · Your login info',
+  preview:'Everything you need for next week\'s session.',
+  from:'Psych Congress Regionals',
+  body:`[First Name], 1 week until your October PC Regionals session.
+
+Session: [TITLE]
+Date: [DATE] · [TIME] ET
+Faculty: [NAME], [CREDENTIALS]
+Login: [LINK]
+CE: [X.X] credits via post-session evaluation
+
+See you October [DATE].`,
+  cta:'Add to Calendar',
+  note:'Standard registrant logistics. No changes from prior months.'
+},
+{
+  date:'10/5/2026', brand:'PCR', seg:'Registrants',
+  name:'Know Before You Go — October',
+  subjA:'October PCR — everything you need, 3 days out',
+  subjB:'October PCR: login, CE, what to expect',
+  preview:'3 days. Your complete session guide.',
+  from:'Psych Congress Regionals',
+  body:`[First Name], 3 days until your October PC Regionals session.
+
+Session: [TITLE] · [DATE] · [TIME] ET
+Login: [LINK] — works 30 min before
+CE: Complete post-session evaluation = instant certificate
+On-demand: 7 days post-session
+
+See you October [DATE].`,
+  cta:'Add to Calendar / Login Link',
+  note:'KBYG format. Consistent across all months.'
+},
+{
+  date:'10/7/2026', brand:'PCR', seg:'Prospects',
+  name:'1 Day Away — October Prospects',
+  subjA:'Tomorrow: free CME — [Topic] · [Time] ET',
+  subjB:'[Topic] · October [DATE] · Free · Tomorrow',
+  preview:'Tomorrow. One click to join.',
+  from:'Psych Congress Regionals',
+  body:`Tomorrow.
+
+[SESSION TITLE] · [FACULTY] · [TIME] ET · Free
+
+[REGISTER FREE →]
+
+Already registered? Login link in your confirmation email.`,
+  cta:'Register Free',
+  note:'One day out. Four sentences maximum.'
+},
+{
+  date:'10/8/2026', brand:'PCR', seg:'Registrants',
+  name:'Day 1 Morning Flash — October',
+  subjA:'Today: PCR · [Topic] · [TIME] ET',
+  subjB:'October PCR starts at [TIME] ET today',
+  preview:'Join now.',
+  from:'Psych Congress Regionals',
+  body:`Today's session: [TIME] ET.
+
+[TITLE] · [FACULTY] · [X.X] Credits
+
+[JOIN NOW →]`,
+  cta:'Join Now',
+  note:'Day-of. Three lines. The format that delivers 60.88% OR. Do not add anything.'
+},
+{
+  date:'10/9/2026', brand:'PCR', seg:'Registrants',
+  name:'Day 2 Morning Flash — October',
+  subjA:'Day 2: PCR · [Topic] · [TIME] ET',
+  subjB:'Day 2 · October PCR · [Time] ET',
+  preview:'Day 2. Your link is below.',
+  from:'Psych Congress Regionals',
+  body:`Day 2.
+
+[TITLE] · [FACULTY] · [TIME] ET · [X.X] Credits
+
+[JOIN NOW →]
+
+CE: Complete today's evaluation for your certificate.`,
+  cta:'Join Now',
+  note:'Day 2. Even shorter.'
+},
+{
+  date:'10/10/2026', brand:'USPC', seg:'All',
+  name:'World Mental Health Day',
+  subjA:'World Mental Health Day · October 10',
+  subjB:'October 10 · World Mental Health Day',
+  preview:'Resources and recognition for mental health clinicians.',
+  from:'Psych Congress 2026',
+  body:`October 10 is World Mental Health Day.
+
+For the clinicians on this list: thank you for the work you do every day.
+
+Resources:
+→ NAMI: nami.org · 1-800-950-NAMI
+→ 988 Suicide and Crisis Lifeline: call or text 988
+→ MentalHealth.gov: mentalhealth.gov
+
+PC Regionals October session — [DATE] — covers [TOPIC]. Free for all clinicians.
+[REGISTER FREE →]
+
+P.S. — If you or someone you know is in crisis: call or text 988.`,
+  cta:'Register for October PCR',
+  note:'Awareness calendar email. Short. Genuine. The PCR cross-sell is appropriate because it\'s free and directly relevant. Crisis line P.S. is mandatory.'
+},
+{
+  date:'10/12/2026', brand:'PCR', seg:'Attendees',
+  name:'Thank You — October PCR',
+  subjA:'Thank you · October PCR CE certificate ready',
+  subjB:'October PCR: CE certificate + next session',
+  preview:'Survey = certificate. Last session of the year coming up.',
+  from:'Psych Congress Regionals',
+  body:`Thank you for joining today's session on [TOPIC].
+
+CE certificate: complete the post-session evaluation.
+
+[COMPLETE EVALUATION →]
+
+On-demand: [LINK] · 7 days
+
+---
+
+One PCR session left in 2026: November [DATE] · [TOPIC]
+[REGISTER FOR NOVEMBER →]
+
+P.S. — CE expires after [X] days.`,
+  cta:'Complete Evaluation / Register for November',
+  note:'"One PCR session left in 2026" creates genuine scarcity for the November registration CTA.'
+},
+{
+  date:'10/12/2026', brand:'PCR', seg:'No Shows',
+  name:'Sorry We Missed You — October',
+  subjA:'Missed October PCR — on-demand available for [X] more days',
+  subjB:'October PCR on-demand: [X] days left',
+  preview:'Access ends [DATE]. CE still available.',
+  from:'Psych Congress Regionals',
+  body:`You registered for October PCR but couldn't join live.
+
+On-demand access: [X] days remaining.
+
+[ACCESS ON-DEMAND →]
+
+Access expires [DATE].
+
+One session left in 2026: November [DATE] · [TOPIC]
+[REGISTER FREE →]`,
+  cta:'Access On-Demand / Register for November',
+  note:'No-show recovery. Scarcity ("one session left in 2026") drives November registration.'
+},
+{
+  date:'10/13/2026', brand:'PCR', seg:'Prospects',
+  name:'One Session Left in 2026',
+  subjA:'One PCR session left in 2026 — November [DATE]',
+  subjB:'Last free CME of 2026 · PCR · November [DATE]',
+  preview:'One session left. Don\'t miss the last one.',
+  from:'Psych Congress Regionals',
+  body:`One Psych Congress Regionals session left in 2026.
+
+November [DATE] · [TOPIC] · [FACULTY]
+
+[Clinical problem this session covers — 1–2 sentences]
+
+Free. [X.X] credits. Online.
+
+[REGISTER FREE → LAST SESSION OF 2026]
+
+P.S. — After November, the next PCR session is [DATE] in 2027. [Join the 2027 early notification list →]`,
+  cta:'Register Free — Last Session of 2026',
+  note:'"Last session of 2026" is genuine scarcity. The 2027 early notification P.S. builds the pipeline forward.'
+},
+{
+  date:'10/21/2026', brand:'PCR', seg:'Prospects',
+  name:'Last Chance for Free Psychopharm Education',
+  subjA:'Last free psychopharmacology CE of 2026 · November [DATE]',
+  subjB:'The last free PCR session of the year — [Topic] · November [DATE]',
+  preview:'After November, the next one is 2027.',
+  from:'Psych Congress Regionals',
+  body:`The last Psych Congress Regionals session of 2026 is November [DATE].
+
+[SESSION TITLE] · [FACULTY]
+
+[Clinical relevance — 2 sentences. The patient scenario this answers.]
+
+Free. [X.X] CME credits. Online. No travel.
+
+[REGISTER FREE — LAST SESSION OF 2026 →]
+
+P.S. — Next PCR session after November: [2027 DATE or "TBA for 2027"]. [Join the 2027 notification list →]`,
+  cta:'Register Free — Last Session of 2026',
+  note:'Re-emphasizes "last of the year" with stronger language. Different angle on the same scarcity point. Use for non-opens of the October 13 send.'
+},
+
+// ─────────────────────────────────────────────────────────────
+// NOVEMBER 2026
+// ─────────────────────────────────────────────────────────────
+{
+  date:'10/29/2026', brand:'PCR', seg:'Prospects',
+  name:'2 Weeks Away — November PCR',
+  subjA:'2 weeks: last free CME of 2026 · November [DATE]',
+  subjB:'November PCR · [Topic] · 2 weeks away',
+  preview:'2 weeks. The last one of the year.',
+  from:'Psych Congress Regionals',
+  body:`2 weeks until the last PC Regionals session of 2026.
+
+[SESSION TITLE] · [FACULTY] · [DATE] · [TIME] ET
+
+[Clinical problem — 1 sentence]
+
+Free. [X.X] credits.
+
+[REGISTER FREE — LAST SESSION OF 2026 →]`,
+  cta:'Register Free',
+  note:'2 weeks. Short. "Last session of 2026" carries the scarcity all the way to this send.'
+},
+{
+  date:'11/5/2026', brand:'PCR', seg:'Prospects',
+  name:'1 Week Away — November Prospects',
+  subjA:'1 week: last free CME of 2026 · [Topic] · November [DATE]',
+  subjB:'Last PCR of 2026 · 1 week · [Topic]',
+  preview:'1 week. Last one. Register if you haven\'t.',
+  from:'Psych Congress Regionals',
+  body:`1 week until the last PC Regionals session of 2026.
+
+[TITLE] · [FACULTY] · [DATE] · [TIME] ET
+
+[One clinical sentence]
+
+Free. Last one this year.
+
+[REGISTER FREE →]`,
+  cta:'Register Free',
+  note:'Shortest version of the 1-week prospect email. Scarcity ("last one this year") does the work.'
+},
+{
+  date:'11/5/2026', brand:'PCR', seg:'Registrants',
+  name:'1 Week Away — November Registrants',
+  subjA:'1 week, [First Name] — November PCR details',
+  subjB:'Your November PCR session is [DATE] at [TIME] ET',
+  preview:'Login, CE, what to expect.',
+  from:'Psych Congress Regionals',
+  body:`[First Name], 1 week until your November PC Regionals session.
+
+Session: [TITLE]
+Date: [DATE] · [TIME] ET
+Faculty: [NAME], [CREDENTIALS]
+Login: [LINK]
+CE: [X.X] credits
+
+See you November [DATE].`,
+  cta:'Add to Calendar',
+  note:'Standard registrant logistics.'
+},
+{
+  date:'11/9/2026', brand:'PCR', seg:'Registrants',
+  name:'Know Before You Go — November',
+  subjA:'November PCR — everything you need, 3 days out',
+  subjB:'November PCR: login, CE, and what to expect',
+  preview:'3 days. Complete guide.',
+  from:'Psych Congress Regionals',
+  body:`[First Name], 3 days until your November PC Regionals session.
+
+Session: [TITLE] · [DATE] · [TIME] ET
+Login: [LINK]
+CE: Post-session evaluation = instant certificate
+On-demand: 7 days post-session
+
+See you November [DATE].`,
+  cta:'Add to Calendar',
+  note:'KBYG. Consistent format.'
+},
+{
+  date:'11/11/2026', brand:'PCR', seg:'Prospects',
+  name:'1 Day Away — November Prospects',
+  subjA:'Tomorrow: last free CME of 2026 · [Topic] · [Time] ET',
+  subjB:'[DATE]: [Topic] · Free · Tomorrow',
+  preview:'Tomorrow. Last one of 2026.',
+  from:'Psych Congress Regionals',
+  body:`Tomorrow. Last free PCR session of 2026.
+
+[TITLE] · [FACULTY] · [TIME] ET
+
+[REGISTER FREE →]
+
+Already registered? Login link in your confirmation.`,
+  cta:'Register Free',
+  note:'One day out. "Last free PCR session of 2026" — maximum scarcity.'
+},
+{
+  date:'11/12/2026', brand:'PCR', seg:'Registrants',
+  name:'Day 1 Morning Flash — November',
+  subjA:'Today: last PCR of 2026 · [Topic] · [TIME] ET',
+  subjB:'Final PCR session of 2026 · Starts at [TIME] ET today',
+  preview:'Join now. Last one of the year.',
+  from:'Psych Congress Regionals',
+  body:`Today. Last PCR session of 2026.
+
+[TITLE] · [FACULTY] · [TIME] ET · [X.X] Credits
+
+[JOIN NOW →]`,
+  cta:'Join Now',
+  note:'Day-of. The "last of 2026" note adds emotional weight to the standard format without adding length.'
+},
+{
+  date:'11/13/2026', brand:'PCR', seg:'Registrants',
+  name:'Day 2 Morning Flash — November',
+  subjA:'Day 2 · Final PCR session · [TIME] ET',
+  subjB:'Day 2 of the final PCR 2026 session · [Time] ET',
+  preview:'Day 2. Your link is below.',
+  from:'Psych Congress Regionals',
+  body:`Day 2. Final PCR session of 2026.
+
+[TITLE] · [FACULTY] · [TIME] ET · [X.X] Credits
+
+[JOIN NOW →]
+
+CE: Complete today's evaluation for your certificate. This is the last PCR CE of 2026.`,
+  cta:'Join Now',
+  note:'The CE reminder carries extra weight on the final session — "last PCR CE of 2026" motivates evaluation completion.'
+},
+{
+  date:'11/16/2026', brand:'PCR', seg:'Attendees',
+  name:'Thank You — November PCR',
+  subjA:'Thank you · That\'s a wrap on PCR 2026',
+  subjB:'PCR 2026 is complete · Your CE certificate + what\'s next',
+  preview:'CE certificate. On-demand. See you in 2027.',
+  from:'Psych Congress Regionals',
+  body:`Thank you for attending the final PC Regionals session of 2026.
+
+CE certificate: complete the post-session evaluation.
+
+[COMPLETE EVALUATION →]
+
+On-demand access: [LINK] · 7 days
+
+---
+
+PCR 2027 schedule: announced [DATE]. [Join the 2027 early notification list →]
+
+Thank you for being part of PC Regionals in 2026.`,
+  cta:'Complete Evaluation / Join 2027 Notification List',
+  note:'The 2027 notification list CTA is your most important pipeline moment of the year. This converts PCR attendees into future registrants before they disengage.'
+},
+{
+  date:'11/16/2026', brand:'PCR', seg:'No Shows',
+  name:'Sorry We Missed You — November',
+  subjA:'Missed the final PCR of 2026 — on-demand available',
+  subjB:'Final PCR 2026 on-demand: [X] days left',
+  preview:'Last chance to claim your free 2026 CME.',
+  from:'Psych Congress Regionals',
+  body:`You registered for the November PC Regionals session but couldn't join live.
+
+This was the final PCR session of 2026. On-demand access is available for [X] more days.
+
+[ACCESS ON-DEMAND → CLAIM YOUR FINAL 2026 CME →]
+
+Access expires [DATE].
+
+PCR 2027 is coming. [Join the early notification list →]`,
+  cta:'Access On-Demand / Join 2027 List',
+  note:'"Final 2026 CME" creates genuine urgency for on-demand completion. 2027 pipeline built in.'
+},
+{
+  date:'11/16/2026', brand:'PCR', seg:'Prospects',
+  name:'That\'s a Wrap — PCR 2026',
+  subjA:'PCR 2026 is complete · See you in 2027',
+  subjB:'That\'s a wrap on PC Regionals 2026',
+  preview:'PCR 2026 ended. Here\'s how to stay connected for 2027.',
+  from:'Psych Congress Regionals',
+  body:`PC Regionals 2026 is complete.
+
+This year: [X] sessions · [X] clinicians · [X] CME credits
+
+If you joined us for any session in 2026: thank you.
+
+If you followed along but didn't register: PC Regionals 2027 is coming.
+
+[JOIN THE 2027 EARLY NOTIFICATION LIST →]
+
+You'll be the first to know when the 2027 schedule is announced.`,
+  cta:'Join 2027 Early Notification List',
+  note:'Year-end wrap for prospects who followed PCR but didn\'t register. The 2027 notification list is the conversion ask — low friction, high future value.'
+},
+
+// ─────────────────────────────────────────────────────────────
+// HOLIDAY PROMOS
+// ─────────────────────────────────────────────────────────────
+{
+  date:'11/24/2026', brand:'USPC', seg:'All',
+  name:'Thanksgiving Promo',
+  subjA:'Happy Thanksgiving from Psych Congress',
+  subjB:'A note for the week of Thanksgiving',
+  preview:'Thank you for the work you do. A message for the holiday week.',
+  from:'Psych Congress 2026',
+  body:`To the psychiatrists, NPs, PAs, and mental health clinicians on this list:
+
+Thank you for the work you do.
+
+The holiday season is complicated for many of the patients in your care. You know this better than anyone.
+
+From the entire Psych Congress team: thank you. Have a good week.
+
+---
+
+PC Regionals 2027 and Psych Congress 2027 are coming. [Join the 2027 early notification list →]
+
+P.S. — 988 Suicide and Crisis Lifeline: call or text 988. Available 24/7.`,
+  cta:'Join 2027 Notification List',
+  note:'No hard sell. Genuine gratitude. The clinical acknowledgment of the holidays being difficult for patients is real and will resonate. The P.S. crisis line is appropriate for the season.'
+},
+{
+  date:'12/21/2026', brand:'USPC', seg:'All',
+  name:'Holiday Promo',
+  subjA:'Happy Holidays from Psych Congress',
+  subjB:'A note as 2026 closes',
+  preview:'Thank you for a remarkable year. Here\'s what\'s coming in 2027.',
+  from:'Psych Congress 2026',
+  body:`As 2026 closes:
+
+Thank you for being part of the Psych Congress community this year.
+
+Psych Congress 2026 brought [X] clinicians to New Orleans in September. PC Regionals delivered free CME to clinicians in every state. Elevate, NP Institute, and PA Institute connected thousands of NPs and PAs to advanced clinical education.
+
+We'll see you in 2027.
+
+PC2027 announcements: coming [MONTH]. [Stay on our list →]
+
+Happy holidays.
+
+---
+
+P.S. — 988 Suicide and Crisis Lifeline: call or text 988. Available 24/7 for anyone who needs it.`,
+  cta:'Stay on Our List / Join 2027 Notification',
+  note:'Year-end. Genuine. Numbers make the thank-you specific. P.S. crisis line is appropriate for the holiday season. The pipeline CTA ("stay on our list") is the lowest-friction ask possible.'
+}
+
+];
+
+// ─────────────────────────────────────────────────────────────
+// RENDER ENGINE
+// ─────────────────────────────────────────────────────────────
+let activeBrand = 'ALL';
+let activeSeg = 'ALL';
+let activeSearch = '';
+
+const BRAND_COLORS = {
+  USPC:{c:'#1e40af',bg:'#dbeafe',label:'Psych Congress'},
+  PCR:{c:'#9d174d',bg:'#fce7f3',label:'PC Regionals'},
+  ELEVATE:{c:'#6b21a8',bg:'#f3e8ff',label:'Elevate'},
+  NPI:{c:'#92400e',bg:'#fef3c7',label:'NP Institute'},
+  PAI:{c:'#0369a1',bg:'#e0f2fe',label:'PA Institute'},
+};
+
+const SEG_COLORS = {
+  TOFU:{bg:'#fee2e2',c:'#991b1b'}, MOFU:{bg:'#fef3c7',c:'#92400e'},
+  BOFU:{bg:'#dcfce7',c:'#166534'}, Registrants:{bg:'#dbeafe',c:'#1e40af'},
+  Alumni:{bg:'#f3e8ff',c:'#6b21a8'}, Prospects:{bg:'#f1f5f9',c:'#334155'},
+  Local:{bg:'#e0f2fe',c:'#0369a1'}, All:{bg:'#f8fafc',c:'#64748b'},
+  Pendings:{bg:'#fef9c3',c:'#854d0e'}, Attendees:{bg:'#f0fdf4',c:'#047857'},
+  'No Shows':{bg:'#fff7ed',c:'#c2410c'},
+};
+
+function getSegs(seg) {
+  return seg.split(',').map(s => s.trim());
+}
+
+function pill(text, colors) {
+  const co = colors || {bg:'#f1f5f9',c:'#64748b'};
+  return `<span class="pill" style="background:${co.bg};color:${co.c};">${text}</span>`;
+}
+
+function renderEmails() {
+  const list = document.getElementById('emailList');
+  const count = document.getElementById('emailCount');
+
+  const filtered = EMAILS.filter(e => {
+    if (activeBrand !== 'ALL' && e.brand !== activeBrand) return false;
+    if (activeSeg !== 'ALL') {
+      const segs = getSegs(e.seg);
+      if (!segs.some(s => s.toLowerCase().includes(activeSeg.toLowerCase()) || activeSeg.toLowerCase().includes(s.toLowerCase()))) return false;
+    }
+    if (activeSearch) {
+      const q = activeSearch.toLowerCase();
+      if (!e.name.toLowerCase().includes(q) && !e.subjA.toLowerCase().includes(q) &&
+          !(e.body||'').toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+
+  count.textContent = `${filtered.length} of ${EMAILS.length} emails`;
+
+  // Group by month
+  const months = {};
+  filtered.forEach(e => {
+    const d = new Date(e.date);
+    const key = d.toLocaleString('en-US',{month:'long',year:'numeric'});
+    if (!months[key]) months[key] = [];
+    months[key].push(e);
+  });
+
+  list.innerHTML = Object.entries(months).map(([month, emails]) => `
+    <div class="month-header">${month} — ${emails.length} email${emails.length!==1?'s':''}</div>
+    ${emails.map((e,i) => {
+      const bc = BRAND_COLORS[e.brand] || {c:'#64748b',bg:'#f1f5f9',label:e.brand};
+      const segs = getSegs(e.seg);
+      const idx = EMAILS.indexOf(e);
+      return `<div class="ec" data-brand="${e.brand}" data-seg="${e.seg}">
+        <div class="ec-hdr" onclick="toggle(${idx})">
+          <div style="flex:1;">
+            <div class="ec-date">${e.date} · ${bc.label}</div>
+            <div class="ec-name">${e.name}</div>
+            <div class="ec-tags">
+              ${pill(e.brand, bc)}
+              ${segs.map(s => pill(s, SEG_COLORS[s.trim()]||{bg:'#f1f5f9',c:'#64748b'})).join('')}
+            </div>
+          </div>
+          <div class="arrow" id="arrow-${idx}">▼</div>
+        </div>
+        <div class="ec-body" id="body-${idx}">
+          <div class="field-label">Subject Lines (A/B Test)</div>
+          <div class="subj"><span class="subj-tag subj-a">A</span><strong>${e.subjA}</strong></div>
+          ${e.subjB ? `<div class="subj"><span class="subj-tag subj-b">B</span><span style="color:#6b21a8;font-weight:600;">${e.subjB}</span></div>` : ''}
+          ${e.preview ? `<div class="field-label">Preview Text</div><div class="preview-box">${e.preview}</div>` : ''}
+          <div class="field-label">From</div>
+          <div class="from-box">${e.from}</div>
+          <div class="field-label">Full Body Copy</div>
+          <div class="copy-box">${e.body}</div>
+          <div class="field-label">Primary CTA</div>
+          <div class="cta-box">${e.cta}</div>
+          ${e.note ? `<div class="field-label">Copy Notes</div><div class="note-box">${e.note}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('')}
+  `).join('');
+}
+
+window.toggle = function(idx) {
+  const body = document.getElementById(`body-${idx}`);
+  const arrow = document.getElementById(`arrow-${idx}`);
+  const open = body.classList.toggle('open');
+  arrow.textContent = open ? '▲' : '▼';
+};
+
+window.filter = function(el, brand) {
+  document.querySelectorAll('[data-brand]').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  activeBrand = brand;
+  renderEmails();
+};
+
+window.filterSeg = function() {
+  activeSeg = document.getElementById('segFilter').value;
+  renderEmails();
+};
+
+window.search = function() {
+  activeSearch = document.getElementById('search').value;
+  renderEmails();
+};
+
+renderEmails();
+</script>
+</body>
+</html>
