@@ -1,4 +1,4 @@
-**
+/**
  * fetch-hs-stats.js
  *
  * Fetches HubSpot Marketing Email statistics and writes email_stats.json.
