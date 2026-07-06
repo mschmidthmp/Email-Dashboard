@@ -1377,6 +1377,21 @@ async function autoLoadHubSpotStats() {
 
     // Store for HubSpot Live Data tab use
     window.HS_EMAIL_STATS = data;
+          const overviewRefreshDate = document.getElementById('overviewRefreshDate');
+    if (overviewRefreshDate && !Number.isNaN(updated.getTime())) {
+      const refreshLabel = updated.toLocaleString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      });
+
+      overviewRefreshDate.textContent = isSeed
+        ? `📡 Seed data from ${refreshLabel}`
+        : `📡 Data refreshed ${refreshLabel}`;
+    }
     console.log(`Loaded ${data.emails.length} email stats from HubSpot (${data.generatedAt})`);
 
   } catch (e) {
