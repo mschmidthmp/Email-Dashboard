@@ -12,6 +12,8 @@
  *   not supported by this script.
  *
  * Required HubSpot scope for the Marketing Emails v3 API: content.
+ * See docs/refresh-hubspot-token.md in this repository for step-by-step token
+ * and secret rotation instructions.
  */
 
 'use strict';
@@ -98,6 +100,8 @@ function getErrorMessage(status, body, url) {
     return [
       baseMessage,
       'Authorization failed. Confirm the credential has the content scope and that your HubSpot account has access to Marketing Emails API data.',
+      'See docs/refresh-hubspot-token.md in this repository for instructions to create or rotate a private app token and update the HUBSPOT_TOKEN secret.',
+      'HubSpot scopes docs: https://developers.hubspot.com/scopes',
     ].join(' ');
   }
 
@@ -340,5 +344,7 @@ async function main() {
 
 main().catch(error => {
   console.error('\nFatal error:', scrubCredential(error.message));
+  console.error('If this is a 403/MISSING_SCOPES error, ensure the HUBSPOT_TOKEN secret belongs to a HubSpot Private App with the required scopes (Marketing Emails / content).');
+  console.error('See docs/refresh-hubspot-token.md in this repository for step-by-step instructions and the HubSpot scopes docs: https://developers.hubspot.com/scopes');
   process.exitCode = 1;
 });
