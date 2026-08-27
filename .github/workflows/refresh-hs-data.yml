@@ -14,14 +14,15 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
       - name: Set up Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
+          package-manager-cache: false
 
       - name: Fetch HubSpot marketing email stats
         env:
@@ -31,9 +32,13 @@ jobs:
 
       - name: Commit and push updated stats
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add email_stats.json
-               - name: Commit and push updated stats
-   
-          git diff --staged --quiet && echo "No changes to commit" || (git commit -m "Update email stats" && git push)
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update email stats"
+            git push
+          fi
