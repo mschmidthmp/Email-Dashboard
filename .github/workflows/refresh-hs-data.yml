@@ -35,8 +35,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add email_stats.json
                - name: Commit and push updated stats
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add email_stats.json
+   
           git diff --staged --quiet && echo "No changes to commit" || (git commit -m "Update email stats" && git push)
