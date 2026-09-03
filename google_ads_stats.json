@@ -1,0 +1,786 @@
+{
+  "generatedAt": "2026-09-03T16:17:50.107744Z",
+  "generatedBy": "supermetrics-mcp-live",
+  "source": "Google Ads via Supermetrics (ds_id AW)",
+  "account": {
+    "id": "3238274495",
+    "name": "HMP COMMUNICATIONS LLC",
+    "currency": "USD"
+  },
+  "periods": {
+    "ytd": {
+      "label": "2026 YTD",
+      "startDate": "2026-01-01",
+      "endDate": "2026-08-20"
+    },
+    "last30": {
+      "label": "Last 30 Days",
+      "startDate": "2026-07-22",
+      "endDate": "2026-08-20"
+    }
+  },
+  "portfolio": {
+    "ytd": {
+      "impressions": 133258,
+      "clicks": 22182,
+      "conversions": 1160.33,
+      "conversionValue": 627394.75,
+      "cost": 33845.93,
+      "ctr": 16.65,
+      "cpc": 1.53,
+      "roas": 1854.0,
+      "cpa": 29.17,
+      "convRate": 5.23
+    },
+    "last30": {
+      "impressions": 16566,
+      "clicks": 3076,
+      "conversions": 184.0,
+      "conversionValue": 134693.0,
+      "cost": 5964.36,
+      "ctr": 18.57,
+      "cpc": 1.94,
+      "roas": 2258.0,
+      "cpa": 32.41,
+      "convRate": 5.98
+    }
+  },
+  "portfolioAllPsych": {
+    "ytd": {
+      "impressions": 215028,
+      "clicks": 25947,
+      "conversions": 1210.33,
+      "conversionValue": 635687.4,
+      "cost": 43969.05,
+      "ctr": 12.07,
+      "cpc": 1.69,
+      "roas": 1446.0,
+      "cpa": 36.33,
+      "convRate": 4.66
+    },
+    "last30": {
+      "impressions": 56337,
+      "clicks": 4564,
+      "conversions": 191.0,
+      "conversionValue": 136636.5,
+      "cost": 9639.09,
+      "ctr": 8.1,
+      "cpc": 2.11,
+      "roas": 1418.0,
+      "cpa": 50.47,
+      "convRate": 4.18
+    }
+  },
+  "brands": {
+    "ytd": {
+      "USPC": {
+        "campaigns": [
+          {
+            "name": "Brand",
+            "impressions": 15883,
+            "clicks": 6714,
+            "ctr": 42.27,
+            "cpc": 0.7,
+            "conversions": 392.33,
+            "conversionValue": 287241.0,
+            "cost": 4719.84,
+            "roas": 6086.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Performance Max",
+            "impressions": 28475,
+            "clicks": 4111,
+            "ctr": 14.44,
+            "cpc": 1.9,
+            "conversions": 133.0,
+            "conversionValue": 95490.5,
+            "cost": 7826.38,
+            "roas": 1220.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Portfolio",
+            "impressions": 14766,
+            "clicks": 1586,
+            "ctr": 10.74,
+            "cpc": 2.5,
+            "conversions": 61.0,
+            "conversionValue": 21873.0,
+            "cost": 3970.32,
+            "roas": 551.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Demand Gen",
+            "impressions": 8112,
+            "clicks": 194,
+            "ctr": 2.39,
+            "cpc": 0.76,
+            "conversions": 1.0,
+            "conversionValue": 800.0,
+            "cost": 147.1,
+            "roas": 544.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 67236,
+        "clicks": 12605,
+        "conversions": 587.33,
+        "conversionValue": 405404.5,
+        "cost": 16663.64,
+        "ctr": 18.75,
+        "cpc": 1.32,
+        "roas": 2433.0,
+        "cpa": 28.37,
+        "convRate": 4.66,
+        "label": "Psych Congress 2026",
+        "campaignId": "462492177778",
+        "hubspotCode": "USPC 2026",
+        "color": "#1e40af",
+        "bg": "#dbeafe"
+      },
+      "ELEVATE": {
+        "campaigns": [
+          {
+            "name": "Broad",
+            "impressions": 23391,
+            "clicks": 2306,
+            "ctr": 9.86,
+            "cpc": 3.69,
+            "conversions": 84.0,
+            "conversionValue": 35254.0,
+            "cost": 8516.05,
+            "roas": 414.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Brand",
+            "impressions": 11224,
+            "clicks": 3285,
+            "ctr": 29.27,
+            "cpc": 0.86,
+            "conversions": 181.0,
+            "conversionValue": 79273.75,
+            "cost": 2833.2,
+            "roas": 2798.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Video",
+            "impressions": 9675,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpc": 0.0,
+            "conversions": 0.0,
+            "conversionValue": 0.0,
+            "cost": 26.27,
+            "roas": 0.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 44290,
+        "clicks": 5591,
+        "conversions": 265.0,
+        "conversionValue": 114527.75,
+        "cost": 11375.52,
+        "ctr": 12.62,
+        "cpc": 2.03,
+        "roas": 1007.0,
+        "cpa": 42.93,
+        "convRate": 4.74,
+        "label": "Psych Congress Elevate 2026",
+        "campaignId": "434313707032",
+        "hubspotCode": "Elevate 2026",
+        "color": "#6b21a8",
+        "bg": "#f3e8ff"
+      },
+      "NPI": {
+        "campaigns": [
+          {
+            "name": "Broad",
+            "impressions": 6869,
+            "clicks": 1035,
+            "ctr": 15.07,
+            "cpc": 2.25,
+            "conversions": 56.0,
+            "conversionValue": 26345.5,
+            "cost": 2327.96,
+            "roas": 1132.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Brand",
+            "impressions": 3635,
+            "clicks": 1713,
+            "ctr": 47.13,
+            "cpc": 0.3,
+            "conversions": 98.0,
+            "conversionValue": 65572.0,
+            "cost": 522.11,
+            "roas": 12559.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Retargeting",
+            "impressions": 135,
+            "clicks": 27,
+            "ctr": 20.0,
+            "cpc": 4.13,
+            "conversions": 2.0,
+            "conversionValue": 1999.0,
+            "cost": 111.41,
+            "roas": 1794.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Topics",
+            "impressions": 20,
+            "clicks": 2,
+            "ctr": 10.0,
+            "cpc": 12.07,
+            "conversions": 0.0,
+            "conversionValue": 0.0,
+            "cost": 24.15,
+            "roas": 0.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 10659,
+        "clicks": 2777,
+        "conversions": 156.0,
+        "conversionValue": 93916.5,
+        "cost": 2985.63,
+        "ctr": 26.05,
+        "cpc": 1.08,
+        "roas": 3146.0,
+        "cpa": 19.14,
+        "convRate": 5.62,
+        "label": "Psych Congress NP Institute",
+        "campaignId": "411814608312",
+        "hubspotCode": "NPI 2026",
+        "color": "#92400e",
+        "bg": "#fef3c7"
+      },
+      "PCR": {
+        "campaigns": [
+          {
+            "name": "Broad",
+            "impressions": 7083,
+            "clicks": 634,
+            "ctr": 8.95,
+            "cpc": 2.16,
+            "conversions": 92.0,
+            "conversionValue": 3703.0,
+            "cost": 1372.46,
+            "roas": 270.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Brand",
+            "impressions": 2372,
+            "clicks": 448,
+            "ctr": 18.89,
+            "cpc": 1.66,
+            "conversions": 55.0,
+            "conversionValue": 2047.0,
+            "cost": 743.36,
+            "roas": 275.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 9455,
+        "clicks": 1082,
+        "conversions": 147.0,
+        "conversionValue": 5750.0,
+        "cost": 2115.82,
+        "ctr": 11.44,
+        "cpc": 1.96,
+        "roas": 272.0,
+        "cpa": 14.39,
+        "convRate": 13.59,
+        "label": "Psych Congress Regionals",
+        "campaignId": "522147924558",
+        "hubspotCode": "PCR 2026",
+        "color": "#9d174d",
+        "bg": "#fce7f3"
+      },
+      "PCCP": {
+        "campaigns": [
+          {
+            "name": "Broad",
+            "impressions": 1425,
+            "clicks": 61,
+            "ctr": 4.28,
+            "cpc": 8.89,
+            "conversions": 0.0,
+            "conversionValue": 0.0,
+            "cost": 542.6,
+            "roas": 0.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Brand",
+            "impressions": 193,
+            "clicks": 66,
+            "ctr": 34.2,
+            "cpc": 2.47,
+            "conversions": 5.0,
+            "conversionValue": 7796.0,
+            "cost": 162.73,
+            "roas": 4791.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 1618,
+        "clicks": 127,
+        "conversions": 5.0,
+        "conversionValue": 7796.0,
+        "cost": 705.32,
+        "ctr": 7.85,
+        "cpc": 5.55,
+        "roas": 1105.0,
+        "cpa": 141.06,
+        "convRate": 3.94,
+        "label": "Psych Congress Clinical Pearls",
+        "campaignId": "518157066350",
+        "hubspotCode": "PCCP_26",
+        "color": "#166534",
+        "bg": "#dcfce7"
+      },
+      "PUPC": {
+        "campaigns": [
+          {
+            "name": "Broad",
+            "impressions": 6640,
+            "clicks": 468,
+            "ctr": 7.05,
+            "cpc": 2.67,
+            "conversions": 22.0,
+            "conversionValue": 4756.65,
+            "cost": 1250.1,
+            "roas": 381.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Brand",
+            "impressions": 813,
+            "clicks": 231,
+            "ctr": 28.41,
+            "cpc": 3.81,
+            "conversions": 12.0,
+            "conversionValue": 0.0,
+            "cost": 881.21,
+            "roas": 0.0,
+            "valueTracking": "MISSING"
+          }
+        ],
+        "impressions": 7453,
+        "clicks": 699,
+        "conversions": 34.0,
+        "conversionValue": 4756.65,
+        "cost": 2131.31,
+        "ctr": 9.38,
+        "cpc": 3.05,
+        "roas": 223.0,
+        "cpa": 62.69,
+        "convRate": 4.86,
+        "label": "Psych Ultimate Psychopharm Course",
+        "campaignId": "522563126180",
+        "hubspotCode": "PUPC 2026",
+        "color": "#30485f",
+        "bg": "#e2e8f0"
+      },
+      "MCDNPPA": {
+        "campaigns": [
+          {
+            "name": "Performance Max",
+            "impressions": 66433,
+            "clicks": 2263,
+            "ctr": 3.41,
+            "cpc": 1.64,
+            "conversions": 7.0,
+            "conversionValue": 1293.5,
+            "cost": 3707.06,
+            "roas": 35.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Broad",
+            "impressions": 3610,
+            "clicks": 243,
+            "ctr": 6.73,
+            "cpc": 4.18,
+            "conversions": 0.0,
+            "conversionValue": 0.0,
+            "cost": 1016.16,
+            "roas": 0.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "NYC",
+            "impressions": 1850,
+            "clicks": 109,
+            "ctr": 5.89,
+            "cpc": 8.9,
+            "conversions": 0.0,
+            "conversionValue": 0.0,
+            "cost": 969.6,
+            "roas": 0.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Dallas",
+            "impressions": 1314,
+            "clicks": 155,
+            "ctr": 11.8,
+            "cpc": 9.89,
+            "conversions": 4.0,
+            "conversionValue": 696.5,
+            "cost": 1533.42,
+            "roas": 45.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Brand",
+            "impressions": 1110,
+            "clicks": 296,
+            "ctr": 26.67,
+            "cpc": 2.59,
+            "conversions": 5.0,
+            "conversionValue": 1546.0,
+            "cost": 765.57,
+            "roas": 202.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 74317,
+        "clicks": 3066,
+        "conversions": 16.0,
+        "conversionValue": 3536.0,
+        "cost": 7991.81,
+        "ctr": 4.13,
+        "cpc": 2.61,
+        "roas": 44.0,
+        "cpa": 499.49,
+        "convRate": 0.52,
+        "label": "Masterclass NP/PA 2026",
+        "campaignId": "525419094351",
+        "hubspotCode": "MCD NP/PA 2026",
+        "color": "#7c2d12",
+        "bg": "#fed7aa"
+      },
+      "PAI": {
+        "label": "PA Institute 2026",
+        "campaignId": "530249915653",
+        "hubspotCode": "PAI 2026",
+        "color": "#0369a1",
+        "bg": "#e0f2fe",
+        "campaigns": [],
+        "impressions": 0,
+        "clicks": 0,
+        "conversions": 0,
+        "conversionValue": 0.0,
+        "cost": 0.0,
+        "ctr": 0,
+        "cpc": 0,
+        "roas": 0,
+        "cpa": 0,
+        "convRate": 0,
+        "alert": "ZERO Google Ads presence. No campaign exists for PAI 2026."
+      }
+    },
+    "last30": {
+      "USPC": {
+        "campaigns": [
+          {
+            "name": "Brand",
+            "impressions": 3920,
+            "clicks": 1776,
+            "ctr": 45.31,
+            "cpc": 0.84,
+            "conversions": 129.0,
+            "conversionValue": 107544.0,
+            "cost": 1497.48,
+            "roas": 7182.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Performance Max",
+            "impressions": 4592,
+            "clicks": 565,
+            "ctr": 12.3,
+            "cpc": 2.52,
+            "conversions": 14.0,
+            "conversionValue": 9388.0,
+            "cost": 1426.64,
+            "roas": 658.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Portfolio",
+            "impressions": 4941,
+            "clicks": 527,
+            "ctr": 10.67,
+            "cpc": 2.81,
+            "conversions": 34.0,
+            "conversionValue": 8662.0,
+            "cost": 1478.59,
+            "roas": 586.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 13453,
+        "clicks": 2868,
+        "conversions": 177.0,
+        "conversionValue": 125594.0,
+        "cost": 4402.71,
+        "ctr": 21.32,
+        "cpc": 1.54,
+        "roas": 2853.0,
+        "cpa": 24.87,
+        "convRate": 6.17,
+        "label": "Psych Congress 2026",
+        "campaignId": "462492177778",
+        "hubspotCode": "USPC 2026",
+        "color": "#1e40af",
+        "bg": "#dbeafe"
+      },
+      "PCR": {
+        "campaigns": [
+          {
+            "name": "Brand",
+            "impressions": 302,
+            "clicks": 25,
+            "ctr": 8.28,
+            "cpc": 8.41,
+            "conversions": 3.0,
+            "conversionValue": 0.0,
+            "cost": 210.3,
+            "roas": 0.0,
+            "valueTracking": "MISSING"
+          }
+        ],
+        "impressions": 302,
+        "clicks": 25,
+        "conversions": 3.0,
+        "conversionValue": 0.0,
+        "cost": 210.3,
+        "ctr": 8.28,
+        "cpc": 8.41,
+        "roas": 0.0,
+        "cpa": 70.1,
+        "convRate": 12.0,
+        "label": "Psych Congress Regionals",
+        "campaignId": "522147924558",
+        "hubspotCode": "PCR 2026",
+        "color": "#9d174d",
+        "bg": "#fce7f3"
+      },
+      "PCCP": {
+        "campaigns": [
+          {
+            "name": "Broad",
+            "impressions": 2557,
+            "clicks": 95,
+            "ctr": 3.72,
+            "cpc": 10.13,
+            "conversions": 0.0,
+            "conversionValue": 0.0,
+            "cost": 961.98,
+            "roas": 0.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Brand",
+            "impressions": 254,
+            "clicks": 88,
+            "ctr": 34.65,
+            "cpc": 4.42,
+            "conversions": 4.0,
+            "conversionValue": 9099.0,
+            "cost": 389.37,
+            "roas": 2337.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 2811,
+        "clicks": 183,
+        "conversions": 4.0,
+        "conversionValue": 9099.0,
+        "cost": 1351.35,
+        "ctr": 6.51,
+        "cpc": 7.38,
+        "roas": 673.0,
+        "cpa": 337.84,
+        "convRate": 2.19,
+        "label": "Psych Congress Clinical Pearls",
+        "campaignId": "518157066350",
+        "hubspotCode": "PCCP_26",
+        "color": "#166534",
+        "bg": "#dcfce7"
+      },
+      "PUPC": {
+        "campaigns": [
+          {
+            "name": "Broad",
+            "impressions": 809,
+            "clicks": 53,
+            "ctr": 6.55,
+            "cpc": 3.78,
+            "conversions": 0.0,
+            "conversionValue": 0.0,
+            "cost": 200.48,
+            "roas": 0.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Brand",
+            "impressions": 739,
+            "clicks": 92,
+            "ctr": 12.45,
+            "cpc": 5.09,
+            "conversions": 0.0,
+            "conversionValue": 0.0,
+            "cost": 468.4,
+            "roas": 0.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 1548,
+        "clicks": 145,
+        "conversions": 0.0,
+        "conversionValue": 0.0,
+        "cost": 668.88,
+        "ctr": 9.37,
+        "cpc": 4.61,
+        "roas": 0.0,
+        "cpa": 0,
+        "convRate": 0.0,
+        "label": "Psych Ultimate Psychopharm Course",
+        "campaignId": "522563126180",
+        "hubspotCode": "PUPC 2026",
+        "color": "#30485f",
+        "bg": "#e2e8f0"
+      },
+      "MCDNPPA": {
+        "campaigns": [
+          {
+            "name": "Performance Max",
+            "impressions": 36931,
+            "clicks": 1138,
+            "ctr": 3.08,
+            "cpc": 1.88,
+            "conversions": 3.0,
+            "conversionValue": 298.0,
+            "cost": 2134.71,
+            "roas": 14.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Dallas",
+            "impressions": 793,
+            "clicks": 72,
+            "ctr": 9.08,
+            "cpc": 7.92,
+            "conversions": 2.0,
+            "conversionValue": 997.5,
+            "cost": 570.41,
+            "roas": 175.0,
+            "valueTracking": "OK"
+          },
+          {
+            "name": "Brand",
+            "impressions": 499,
+            "clicks": 133,
+            "ctr": 26.65,
+            "cpc": 2.26,
+            "conversions": 2.0,
+            "conversionValue": 648.0,
+            "cost": 300.73,
+            "roas": 215.0,
+            "valueTracking": "OK"
+          }
+        ],
+        "impressions": 38223,
+        "clicks": 1343,
+        "conversions": 7.0,
+        "conversionValue": 1943.5,
+        "cost": 3005.85,
+        "ctr": 3.51,
+        "cpc": 2.24,
+        "roas": 65.0,
+        "cpa": 429.41,
+        "convRate": 0.52,
+        "label": "Masterclass NP/PA 2026",
+        "campaignId": "525419094351",
+        "hubspotCode": "MCD NP/PA 2026",
+        "color": "#7c2d12",
+        "bg": "#fed7aa"
+      },
+      "PAI": {
+        "label": "PA Institute 2026",
+        "campaignId": "530249915653",
+        "hubspotCode": "PAI 2026",
+        "color": "#0369a1",
+        "bg": "#e0f2fe",
+        "campaigns": [],
+        "impressions": 0,
+        "clicks": 0,
+        "conversions": 0,
+        "conversionValue": 0.0,
+        "cost": 0.0,
+        "ctr": 0,
+        "cpc": 0,
+        "roas": 0,
+        "cpa": 0,
+        "convRate": 0,
+        "alert": "ZERO Google Ads presence. No campaign exists for PAI 2026."
+      }
+    }
+  },
+  "dataQualityAlerts": [
+    {
+      "severity": "critical",
+      "brand": "PAI",
+      "issue": "No Google Ads campaign exists for PA Institute 2026.",
+      "detail": "PAI has 10 registrants against a 71,662 contact list and zero paid search support. Every other brand in the portfolio has at least one active campaign.",
+      "action": "Launch a PAI Brand campaign with AAPA CE messaging immediately."
+    },
+    {
+      "severity": "critical",
+      "brand": "PUPC",
+      "issue": "Conversion value not tracking on PUPC 2026 Brand.",
+      "detail": "12 conversions recorded YTD with $0.00 attributed value on $881.21 spend. The campaign cannot be evaluated on ROAS.",
+      "action": "Assign a value-bearing conversion action to the PUPC Brand campaign in Google Ads."
+    },
+    {
+      "severity": "warning",
+      "brand": "PCR",
+      "issue": "PCR conversion values are implausibly low.",
+      "detail": "147 conversions YTD against only $5,750.00 of value on $2,115.82 spend, a 272% ROAS versus 2,433% for USPC. Regional ticket prices are lower, but a $39 average conversion value suggests partial value tracking.",
+      "action": "Audit PCR conversion actions and confirm ticket value is passing through."
+    },
+    {
+      "severity": "warning",
+      "brand": "PCCP",
+      "issue": "CPC 2026 Broad is spending with zero return.",
+      "detail": "$542.60 YTD and $961.98 in the last 30 days produced zero conversions at an $8.90 to $10.13 CPC. Meanwhile CPC Brand returned $7,796.00 on $162.73 for a 4,791% ROAS.",
+      "action": "Pause CPC Broad. Move the budget to CPC Brand."
+    },
+    {
+      "severity": "warning",
+      "brand": "MCDNPPA",
+      "issue": "Masterclass NP/PA is the portfolio's worst performer.",
+      "detail": "$7,991.81 spent YTD for 16 conversions and $3,536.00 of value, a 44% ROAS. The Performance Max campaign alone burned $3,707.06 for 7 conversions.",
+      "action": "Pause Broad, NYC, and Performance Max. Keep Brand only."
+    },
+    {
+      "severity": "info",
+      "brand": "ELEVATE",
+      "issue": "Elevate Video campaign delivered zero clicks.",
+      "detail": "9,675 impressions, 0 clicks, $26.27 spend. Creative is not driving any action.",
+      "action": "Rebuild or retire the video creative."
+    }
+  ]
+}
