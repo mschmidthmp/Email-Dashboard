@@ -8,15 +8,18 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: stats-push
+  cancel-in-progress: false
+
 jobs:
   refresh-data:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up Node.js 24
         uses: actions/setup-node@v6
@@ -27,18 +30,34 @@ jobs:
       - name: Fetch HubSpot marketing email stats
         env:
           HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
-        run: |
-          node fetch-hs-stats.js
+        run: node fetch-hs-stats.js
 
       - name: Commit and push updated stats
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add email_stats.json
 
+          git add email_stats.json
           if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Update email stats"
-            git push
+            echo "No changes to commit."
+            exit 0
           fi
+          git commit -m "Update email stats"
+
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected. Rebasing onto latest main (attempt $attempt)..."
+            git pull --rebase --autostash origin main || {
+              echo "Rebase failed; keeping our generated file."
+              git checkout --ours email_stats.json || true
+              git add email_stats.json || true
+              git rebase --continue || git rebase --abort
+            }
+            sleep 5
+          done
+
+          echo "Could not push after 5 attempts."
+          exit 1
