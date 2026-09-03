@@ -3,17 +3,30 @@
  *
  * Fetches HubSpot Marketing Email statistics and writes email_stats.json.
  *
+ * WHY THIS WAS REWRITTEN
+ *   The previous version fetched email metadata from /marketing/v3/emails and then
+ *   looked for a `stats` object on the response. The v3 email object does not carry
+ *   statistics, so every email fell through to "no stats object returned" and the
+ *   output was always an empty list with no error raised.
+ *
+ *   v3 has no lifetime-stats endpoint. Statistics live at
+ *   /marketing/v3/emails/statistics/list and REQUIRE a time span. To get per-email
+ *   numbers you filter that endpoint to a single emailId and read `aggregate`.
+ *   That is what this version does.
+ *
  * Required credential:
- *   HUBSPOT_TOKEN, HUBSPOT_ACCESS_TOKEN, HUBSPOT_SERVICE_KEY, or HUBSPOT_API_KEY
+ *   HUBSPOT_TOKEN (or HUBSPOT_ACCESS_TOKEN / HUBSPOT_SERVICE_KEY / HUBSPOT_API_KEY)
+ *   Must be a private app access token sent as "Authorization: Bearer <token>".
  *
- * Important:
- *   The value must be a HubSpot private app access token or service key that can
- *   be sent as "Authorization: Bearer <token>". Legacy hapikey/API-key auth is
- *   not supported by this script.
+ * Required HubSpot scope: content
  *
- * Required HubSpot scope for the Marketing Emails v3 API: content.
- * See docs/refresh-hubspot-token.md in this repository for step-by-step token
- * and secret rotation instructions.
+ * Optional env:
+ *   HUBSPOT_STATS_START     ISO date to treat as "all time". Default 2019-01-01.
+ *   HUBSPOT_MAX_PAGES       Email list pages to walk. Default 60.
+ *   HUBSPOT_PAGE_LIMIT      Emails per page. Default 100.
+ *   HUBSPOT_REQUEST_DELAY_MS Delay between stat calls. Default 110 (approx 9/sec).
+ *   HUBSPOT_STATS_LIMIT     Cap emails fetched for stats. Default 0 (no cap).
+ *   OUTPUT_FILE             Default email_stats.json
  */
 
 'use strict';
@@ -22,17 +35,19 @@ const fs = require('fs');
 
 const BASE = 'https://api.hubapi.com';
 const OUTPUT_FILE = process.env.OUTPUT_FILE || 'email_stats.json';
-const MAX_PAGES = Number(process.env.HUBSPOT_MAX_PAGES || 30);
+const MAX_PAGES = Number(process.env.HUBSPOT_MAX_PAGES || 60);
 const PAGE_LIMIT = Number(process.env.HUBSPOT_PAGE_LIMIT || 100);
 const REQUEST_DELAY_MS = Number(process.env.HUBSPOT_REQUEST_DELAY_MS || 110);
+const STATS_LIMIT = Number(process.env.HUBSPOT_STATS_LIMIT || 0);
+const STATS_START = process.env.HUBSPOT_STATS_START || '2019-01-01';
 
 const BRAND_RULES = [
-  { pattern: /^(USPC|PC2|USPC2)/i, brand: 'USPC', label: 'Psych Congress' },
-  { pattern: /^(Elevate)/i, brand: 'ELEVATE', label: 'Elevate' },
-  { pattern: /^(NPI|NPI2|NP Institute)/i, brand: 'NPI', label: 'NP Institute' },
-  { pattern: /^(PAI|PAI2|PA Institute)/i, brand: 'PAI', label: 'PA Institute' },
-  { pattern: /^(PCR|PCR2)/i, brand: 'PCR', label: 'PC Regionals' },
-  { pattern: /^(PCCP)/i, brand: 'PCCP', label: 'Clinical Pearls' },
+  { pattern: /^(USPC|PC2|USPC2|PUPC)/i, brand: 'USPC',    label: 'Psych Congress' },
+  { pattern: /^(Elevate)/i,             brand: 'ELEVATE', label: 'Elevate' },
+  { pattern: /^(NPI|NPI2|NP Institute)/i, brand: 'NPI',   label: 'NP Institute' },
+  { pattern: /^(PAI|PAI2|PA Institute)/i, brand: 'PAI',   label: 'PA Institute' },
+  { pattern: /^(PCR|PCR2)/i,            brand: 'PCR',     label: 'PC Regionals' },
+  { pattern: /^(PCCP|CPC)/i,            brand: 'PCCP',    label: 'Clinical Pearls' },
 ];
 
 function detectBrand(name = '') {
@@ -42,309 +57,282 @@ function detectBrand(name = '') {
   return { brand: 'OTHER', label: 'Other' };
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function getToken() {
-  const candidates = [
-    'HUBSPOT_TOKEN',
-    'HUBSPOT_ACCESS_TOKEN',
-    'HUBSPOT_SERVICE_KEY',
-    'HUBSPOT_API_KEY',
-  ];
-
-  for (const name of candidates) {
+  for (const name of ['HUBSPOT_TOKEN','HUBSPOT_ACCESS_TOKEN','HUBSPOT_SERVICE_KEY','HUBSPOT_API_KEY']) {
     const value = (process.env[name] || '').trim();
     if (value) return { name, value };
   }
-
-  throw new Error(
-    'No HubSpot credential found. Set HUBSPOT_TOKEN to a private app access token or service key.'
-  );
+  throw new Error('No HubSpot credential found. Set HUBSPOT_TOKEN to a private app access token.');
 }
 
 let credential;
-
-function scrubCredential(message = '') {
-  if (!credential?.value) return message;
-  return message.split(credential.value).join('[redacted]');
-}
+const scrub = (m = '') => credential?.value ? m.split(credential.value).join('[redacted]') : m;
 
 async function readJson(response) {
   const text = await response.text();
   if (!text) return null;
-
-  try {
-    return JSON.parse(text);
-  } catch {
-    return { rawBody: text };
-  }
+  try { return JSON.parse(text); } catch { return { rawBody: text }; }
 }
 
 function getErrorMessage(status, body, url) {
-  const hubSpotMessage = body?.message || body?.rawBody || '';
+  const msg = body?.message || body?.rawBody || '';
   const category = body?.category || '';
-  const context = body?.context ? ` Context: ${JSON.stringify(body.context)}` : '';
-  const baseMessage = `HubSpot request failed (${status}) for ${url}. ${hubSpotMessage}${context}`;
-
+  const base = `HubSpot request failed (${status}) for ${url}. ${msg}`;
   if (status === 401) {
-    return [
-      baseMessage,
-      'Authentication failed. This script needs a private app access token or service key used as a Bearer token.',
-      'If you pasted a legacy HubSpot API key/hapikey, create a private app token or service key instead.',
-    ].join(' ');
+    return `${base} Authentication failed. This script needs a private app access token used as a Bearer token, not a legacy hapikey.`;
   }
-
   if (status === 403 || category === 'MISSING_SCOPES') {
-    return [
-      baseMessage,
-      'Authorization failed. Confirm the credential has the content scope and that your HubSpot account has access to Marketing Emails API data.',
-      'See docs/refresh-hubspot-token.md in this repository for instructions to create or rotate a private app token and update the HUBSPOT_TOKEN secret.',
-      'HubSpot scopes docs: https://developers.hubspot.com/scopes',
-    ].join(' ');
+    return `${base} Authorization failed. Confirm the token has the "content" scope. See https://developers.hubspot.com/scopes`;
   }
-
-  return baseMessage;
+  return base;
 }
 
+/** GET with retry on 429. `repeatParams` sends the same key multiple times. */
 async function hubspotGet(path, params = {}, options = {}) {
   const url = new URL(`${BASE}${path}`);
   for (const [key, value] of Object.entries(params)) {
-    if (value !== undefined && value !== null && value !== '') {
-      url.searchParams.set(key, String(value));
-    }
+    if (value === undefined || value === null || value === '') continue;
+    if (Array.isArray(value)) value.forEach(v => url.searchParams.append(key, String(v)));
+    else url.searchParams.set(key, String(value));
   }
 
   let attempt = 0;
   while (true) {
     const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${credential.value}`,
-        Accept: 'application/json',
-      },
+      headers: { Authorization: `Bearer ${credential.value}`, Accept: 'application/json' },
     });
     const body = await readJson(response);
 
     if (response.ok) return body;
-
     if (response.status === 404 && options.allowNotFound) return null;
-
-    if (response.status === 429 && attempt < 4) {
-      const retryAfterSeconds = Number(response.headers.get('retry-after') || 1);
-      const retryDelayMs = Math.max(1000, retryAfterSeconds * 1000);
-      console.warn(`  WARN: rate limited. Waiting ${retryDelayMs} ms before retrying...`);
-      await sleep(retryDelayMs);
+    if ((response.status === 400 || response.status === 500) && options.allowBadRequest) {
+      return { __error: getErrorMessage(response.status, body, url.pathname) };
+    }
+    if (response.status === 429 && attempt < 5) {
+      const wait = Math.max(1000, Number(response.headers.get('retry-after') || 1) * 1000);
+      console.warn(`  WARN: rate limited, waiting ${wait}ms`);
+      await sleep(wait);
       attempt++;
       continue;
     }
-
-    throw new Error(scrubCredential(getErrorMessage(response.status, body, url.pathname)));
+    throw new Error(scrub(getErrorMessage(response.status, body, url.pathname)));
   }
 }
 
 async function fetchAllEmails() {
   const all = [];
-  let after;
-  let page = 0;
-
+  let after, page = 0;
   do {
     const params = { limit: PAGE_LIMIT };
     if (after) params.after = after;
-
     const data = await hubspotGet('/marketing/v3/emails', params);
     const results = data?.results || [];
     all.push(...results);
     after = data?.paging?.next?.after;
     page++;
-
-    console.log(`  Page ${page}: fetched ${results.length} emails (total: ${all.length})`);
+    console.log(`  Page ${page}: ${results.length} emails (total ${all.length})`);
   } while (after && page < MAX_PAGES);
 
-  if (after) {
-    console.warn(`  WARN: stopped after HUBSPOT_MAX_PAGES=${MAX_PAGES}. Increase it to fetch more.`);
-  }
-
+  if (after) console.warn(`  WARN: stopped at HUBSPOT_MAX_PAGES=${MAX_PAGES}. Raise it to fetch more.`);
   return all;
 }
 
-async function fetchEmailDetail(emailId) {
-  return hubspotGet(`/marketing/v3/emails/${encodeURIComponent(emailId)}`, {}, { allowNotFound: true });
+/**
+ * The statistics endpoint has had timestamp-parsing quirks across accounts.
+ * Probe the accepted format once, then reuse it for every subsequent call.
+ */
+let TS_FORMAT = null;
+
+function tsVariants(startISO, endISO) {
+  const s = new Date(startISO), e = new Date(endISO);
+  return [
+    { name: 'iso-datetime', start: s.toISOString().replace(/\.\d{3}Z$/, 'Z'), end: e.toISOString().replace(/\.\d{3}Z$/, 'Z') },
+    { name: 'epoch-millis', start: String(s.getTime()), end: String(e.getTime()) },
+    { name: 'iso-date',     start: startISO.slice(0, 10), end: endISO.slice(0, 10) },
+  ];
 }
 
-function getStatsContainer(emailOrDetail) {
-  if (!emailOrDetail) return null;
-  if (emailOrDetail.stats) return emailOrDetail.stats;
-  if (emailOrDetail.counters || emailOrDetail.ratios) return emailOrDetail;
-  return null;
+async function probeTimestampFormat(startISO, endISO) {
+  for (const v of tsVariants(startISO, endISO)) {
+    const res = await hubspotGet('/marketing/v3/emails/statistics/list',
+      { startTimestamp: v.start, endTimestamp: v.end }, { allowBadRequest: true });
+    if (res && !res.__error) {
+      console.log(`  Timestamp format accepted: ${v.name}`);
+      TS_FORMAT = v.name;
+      return res;
+    }
+    console.warn(`  Format ${v.name} rejected: ${res?.__error?.slice(0, 110)}`);
+    await sleep(REQUEST_DELAY_MS);
+  }
+  throw new Error('No accepted timestamp format for /marketing/v3/emails/statistics/list.');
 }
 
-function firstValue(...values) {
-  return values.find(value => value !== undefined && value !== null && value !== '') || '';
+function tsFor(startISO, endISO) {
+  const v = tsVariants(startISO, endISO).find(x => x.name === TS_FORMAT);
+  return { startTimestamp: v.start, endTimestamp: v.end };
 }
 
-function isSentEmail(email) {
-  const stats = getStatsContainer(email);
-  const counters = stats?.counters || {};
-  return email.state === 'SENT' || counters.processed > 0 || counters.sent > 0;
+/** Per-email stats: filter statistics/list to one emailId, read `aggregate`. */
+async function fetchEmailStats(emailId, startISO, endISO) {
+  const res = await hubspotGet('/marketing/v3/emails/statistics/list',
+    { ...tsFor(startISO, endISO), emailIds: [emailId] }, { allowBadRequest: true });
+  if (!res || res.__error) return null;
+  return res.aggregate || null;
 }
 
-function percent(value) {
-  return value ? +(Number(value) * 100).toFixed(2) : 0;
-}
+const pct = v => v ? +(Number(v) * 100).toFixed(2) : 0;
+const firstValue = (...v) => v.find(x => x !== undefined && x !== null && x !== '') || '';
 
-function buildEmailResult(email, stats) {
-  const counters = stats?.counters || {};
-  const ratios = stats?.ratios || {};
+function buildEmailResult(email, aggregate) {
+  const counters = aggregate?.counters || {};
+  const ratios = aggregate?.ratios || {};
   const { brand, label } = detectBrand(email.name);
+  const delivered = counters.delivered ?? 0;
+  const opens = counters.open ?? counters.opens ?? 0;
+  const clicks = counters.click ?? counters.clicks ?? 0;
 
   return {
     id: email.id,
     name: email.name || '',
     subject: email.subject || '',
-    sendDate: firstValue(email.sendDate, email.publishDate, email.publishedAt, email.updatedAt, email.createdAt),
-    fromName: email.fromName || '',
-    fromEmail: email.fromEmail || '',
+    sendDate: firstValue(email.publishDate, email.publishedAt, email.updatedAt, email.createdAt),
+    fromName: email.from?.fromName || email.fromName || '',
+    fromEmail: email.from?.replyTo || email.fromEmail || '',
     campaignName: email.campaignName || '',
     brand,
     brandLabel: label,
     state: email.state || '',
-    delivered: counters.delivered ?? 0,
+    delivered,
     sent: counters.sent ?? counters.processed ?? 0,
-    opens: counters.open ?? counters.opens ?? 0,
-    clicks: counters.click ?? counters.clicks ?? 0,
-    hardBounces: counters.hardBounced ?? counters.hardBounces ?? 0,
-    softBounces: counters.softBounced ?? counters.softBounces ?? 0,
-    unsubscribes: counters.unsubscribed ?? counters.unsubscribes ?? 0,
-    spamReports: counters.spamreport ?? counters.spamReports ?? 0,
-    openRate: percent(ratios.openRate),
-    clickRate: percent(ratios.clickRate),
-    ctor: percent(ratios.clickThroughRate),
-    bounceRate: percent(ratios.bounceRate),
-    unsubRate: percent(ratios.unsubscribedRate),
-    spamRate: percent(ratios.spamreportRate),
+    opens,
+    clicks,
+    hardBounces: counters.hardbounced ?? counters.hardBounced ?? 0,
+    softBounces: counters.softbounced ?? counters.softBounced ?? 0,
+    unsubscribes: counters.unsubscribed ?? 0,
+    spamReports: counters.spamreport ?? 0,
+    // Prefer HubSpot's ratios; fall back to computing from counters.
+    openRate: ratios.openratio != null ? pct(ratios.openratio)
+            : ratios.openRate  != null ? pct(ratios.openRate)
+            : delivered ? +((opens / delivered) * 100).toFixed(2) : 0,
+    clickRate: ratios.clickratio != null ? pct(ratios.clickratio)
+             : ratios.clickRate  != null ? pct(ratios.clickRate)
+             : delivered ? +((clicks / delivered) * 100).toFixed(2) : 0,
+    ctor: ratios.clickthroughratio != null ? pct(ratios.clickthroughratio)
+        : ratios.clickThroughRate  != null ? pct(ratios.clickThroughRate)
+        : opens ? +((clicks / opens) * 100).toFixed(2) : 0,
+    bounceRate: pct(ratios.bounceratio ?? ratios.bounceRate),
+    unsubRate: pct(ratios.unsubscribedratio ?? ratios.unsubscribedRate),
+    spamRate: pct(ratios.spamreportratio ?? ratios.spamreportRate),
   };
 }
 
-function average(values) {
-  return values.length ? +(values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(2) : 0;
-}
+const average = a => a.length ? +(a.reduce((s, v) => s + v, 0) / a.length).toFixed(2) : 0;
 
 function buildBrandStats(results) {
-  const brandSummary = {};
-
-  for (const email of results) {
-    if (!brandSummary[email.brand]) {
-      brandSummary[email.brand] = {
-        brand: email.brand,
-        label: email.brandLabel,
-        totalSent: 0,
-        totalDelivered: 0,
-        openRates: [],
-        clickRates: [],
-        sent2026: 0,
-        delivered2026: 0,
-        openRates2026: [],
-        clickRates2026: [],
-      };
-    }
-
-    const brand = brandSummary[email.brand];
-    brand.totalSent++;
-    brand.totalDelivered += email.delivered;
-
-    if (email.delivered > 0) {
-      brand.openRates.push(email.openRate);
-      brand.clickRates.push(email.clickRate);
-    }
-
-    if (String(email.sendDate).startsWith('2026')) {
-      brand.sent2026++;
-      brand.delivered2026 += email.delivered;
-
-      if (email.delivered > 0) {
-        brand.openRates2026.push(email.openRate);
-        brand.clickRates2026.push(email.clickRate);
-      }
+  const summary = {};
+  for (const e of results) {
+    const b = (summary[e.brand] ||= {
+      brand: e.brand, label: e.brandLabel, totalSent: 0, totalDelivered: 0,
+      openRates: [], clickRates: [], sent2026: 0, delivered2026: 0,
+      openRates2026: [], clickRates2026: [],
+    });
+    b.totalSent++;
+    b.totalDelivered += e.delivered;
+    if (e.delivered > 0) { b.openRates.push(e.openRate); b.clickRates.push(e.clickRate); }
+    if (String(e.sendDate).startsWith('2026')) {
+      b.sent2026++;
+      b.delivered2026 += e.delivered;
+      if (e.delivered > 0) { b.openRates2026.push(e.openRate); b.clickRates2026.push(e.clickRate); }
     }
   }
-
-  return Object.values(brandSummary).map(brand => ({
-    brand: brand.brand,
-    label: brand.label,
-    totalSent: brand.totalSent,
-    totalDelivered: brand.totalDelivered,
-    avgOpenRate: average(brand.openRates),
-    avgClickRate: average(brand.clickRates),
-    sent2026: brand.sent2026,
-    delivered2026: brand.delivered2026,
-    avgOpenRate2026: average(brand.openRates2026),
-    avgClickRate2026: average(brand.clickRates2026),
-  }));
+  return Object.values(summary).map(b => ({
+    brand: b.brand, label: b.label,
+    totalSent: b.totalSent, totalDelivered: b.totalDelivered,
+    avgOpenRate: average(b.openRates), avgClickRate: average(b.clickRates),
+    sent2026: b.sent2026, delivered2026: b.delivered2026,
+    avgOpenRate2026: average(b.openRates2026), avgClickRate2026: average(b.clickRates2026),
+  })).sort((a, b) => b.totalDelivered - a.totalDelivered);
 }
 
 async function main() {
   credential = getToken();
+  const endISO = new Date().toISOString();
 
   console.log('=== HubSpot Email Stats Refresh ===');
-  console.log(`Started: ${new Date().toISOString()}`);
+  console.log(`Started: ${endISO}`);
   console.log(`Credential source: ${credential.name}`);
+  console.log(`Stats window: ${STATS_START} to ${endISO.slice(0, 10)}`);
 
-  if (credential.name === 'HUBSPOT_API_KEY') {
-    console.warn('WARN: HUBSPOT_API_KEY is accepted as an env var name, but the value still must be a Bearer-token credential, not a legacy hapikey.');
-  }
-
-  console.log('\n[1/3] Fetching email list...');
+  console.log('\n[1/4] Fetching email list...');
   const allEmails = await fetchAllEmails();
   console.log(`Total emails: ${allEmails.length}`);
 
-  const sent = allEmails.filter(isSentEmail);
-  console.log(`Sent emails: ${sent.length}`);
+  if (!allEmails.length) {
+    throw new Error('Email list came back empty. The token is valid but sees no marketing emails. Check that it belongs to the correct HubSpot portal and has the "content" scope.');
+  }
 
-  console.log('\n[2/3] Normalizing email statistics...');
+  // Only emails that actually went out can have stats.
+  const candidates = allEmails.filter(e =>
+    e.state === 'SENT' || e.state === 'PUBLISHED' || e.state === 'AUTOMATED_SENDING' || e.publishDate);
+  console.log(`Sent/published candidates: ${candidates.length}`);
+
+  const targets = STATS_LIMIT > 0 ? candidates.slice(0, STATS_LIMIT) : candidates;
+  if (STATS_LIMIT > 0) console.log(`Capped to ${targets.length} by HUBSPOT_STATS_LIMIT`);
+
+  console.log('\n[2/4] Probing statistics endpoint...');
+  const portalAggregate = await probeTimestampFormat(STATS_START, endISO);
+  const pc = portalAggregate?.aggregate?.counters || {};
+  console.log(`  Portal-wide check: ${(pc.delivered ?? 0).toLocaleString()} delivered, ${(pc.open ?? 0).toLocaleString()} opens`);
+
+  console.log(`\n[3/4] Fetching per-email statistics for ${targets.length} emails...`);
   const results = [];
+  let noStats = 0;
 
-  for (const [index, email] of sent.entries()) {
-    let stats = getStatsContainer(email);
-    let detail = null;
-
-    if (!stats) {
-      detail = await fetchEmailDetail(email.id);
-      stats = getStatsContainer(detail);
-      await sleep(REQUEST_DELAY_MS);
-    }
-
-    if (stats) {
-      results.push(buildEmailResult({ ...email, ...detail }, stats));
+  for (const [i, email] of targets.entries()) {
+    const aggregate = await fetchEmailStats(email.id, STATS_START, endISO);
+    if (aggregate?.counters && (aggregate.counters.delivered > 0 || aggregate.counters.sent > 0)) {
+      results.push(buildEmailResult(email, aggregate));
     } else {
-      console.warn(`  WARN: ${email.id}: no stats object returned`);
+      noStats++;
     }
+    await sleep(REQUEST_DELAY_MS);
+    const n = i + 1;
+    if (n % 100 === 0 || n === targets.length) {
+      console.log(`  ${n}/${targets.length} · kept ${results.length} · skipped ${noStats}`);
+    }
+  }
 
-    const processed = index + 1;
-    if (processed % 50 === 0) console.log(`  Progress: ${processed}/${sent.length}...`);
+  if (!results.length) {
+    throw new Error('Statistics endpoint responded but returned no delivered volume for any email. Widen HUBSPOT_STATS_START or confirm this portal has sent marketing emails.');
   }
 
   results.sort((a, b) => new Date(b.sendDate) - new Date(a.sendDate));
 
-  console.log('\n[3/3] Writing email_stats.json...');
+  console.log('\n[4/4] Writing output...');
   const brandStats = buildBrandStats(results);
-  const output = {
+  const totalDelivered = results.reduce((s, e) => s + e.delivered, 0);
+
+  fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
     generatedAt: new Date().toISOString(),
     generatedBy: 'fetch-hs-stats',
+    statsWindow: { start: STATS_START, end: endISO },
+    timestampFormat: TS_FORMAT,
     totalEmails: results.length,
+    totalDelivered,
+    emailsWithoutStats: noStats,
     brandStats,
     emails: results,
-  };
+  }, null, 2), 'utf8');
 
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2), 'utf8');
-  console.log(`Done. Wrote ${results.length} emails to ${OUTPUT_FILE}`);
-  console.log(`Brands: ${brandStats.map(brand => `${brand.brand}(${brand.totalSent})`).join(', ')}`);
-  console.log(`Finished: ${new Date().toISOString()}`);
+  console.log(`Done. ${results.length} emails, ${totalDelivered.toLocaleString()} delivered -> ${OUTPUT_FILE}`);
+  console.log(`Brands: ${brandStats.map(b => `${b.brand}(${b.totalSent})`).join(', ')}`);
 }
 
 main().catch(error => {
-  console.error('\nFatal error:', scrubCredential(error.message));
-  console.error('If this is a 403/MISSING_SCOPES error, ensure the HUBSPOT_TOKEN secret belongs to a HubSpot Private App with the required scopes (Marketing Emails / content).');
-  console.error('See docs/refresh-hubspot-token.md in this repository for step-by-step instructions and the HubSpot scopes docs: https://developers.hubspot.com/scopes');
+  console.error('\nFatal error:', scrub(error.message));
+  console.error('Token setup: the HUBSPOT_TOKEN secret must be a HubSpot Private App access token with the "content" scope.');
+  console.error('HubSpot scopes: https://developers.hubspot.com/scopes');
   process.exitCode = 1;
 });
