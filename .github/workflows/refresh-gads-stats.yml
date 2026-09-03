@@ -1,1 +1,39 @@
+name: Refresh Google Ads Stats
 
+on:
+  schedule:
+    - cron: '15 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch Google Ads stats
+        env:
+          SUPERMETRICS_API_KEY: ${{ secrets.SUPERMETRICS_API_KEY }}
+          GADS_ACCOUNT_ID: '3238274495'
+        run: node fetch-gads-stats.js
+
+      - name: Commit updated JSON
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add google_ads_stats.json
+          if git diff --staged --quiet; then
+            echo "No change in Google Ads data. Nothing to commit."
+          else
+            git commit -m "Auto-refresh Google Ads stats $(date -u +%Y-%m-%d)"
+            git push
+          fi
