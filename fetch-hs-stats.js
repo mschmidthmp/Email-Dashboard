@@ -159,10 +159,6 @@ function statsParams(startISO, endISO, emailId) {
   };
 }
 
-async function fetchPortalStats(startISO, endISO) {
-  return hubspotGet(STATS_PATH, statsParams(startISO, endISO));
-}
-
 /** Per-email stats: filter statistics/list to one emailId, read aggregate. */
 async function fetchEmailStats(emailId, startISO, endISO) {
   const res = await hubspotGet(
@@ -273,12 +269,8 @@ async function main() {
   const targets = STATS_LIMIT > 0 ? candidates.slice(0, STATS_LIMIT) : candidates;
   if (STATS_LIMIT > 0) console.log(`Capped to ${targets.length} by HUBSPOT_STATS_LIMIT`);
 
-  console.log('\n[2/4] Fetching statistics endpoint...');
-  const portalAggregate = await fetchPortalStats(STATS_START, endISO);
-  const pc = portalAggregate?.aggregate?.counters || {};
-  console.log(`  Portal-wide check: ${(pc.delivered ?? 0).toLocaleString()} delivered, ${(pc.open ?? 0).toLocaleString()} opens`);
-
-  console.log(`\n[3/4] Fetching per-email statistics for ${targets.length} emails...`);
+  console.log(`
+[2/4] Fetching per-email statistics for ${targets.length} emails...`);
   const results = [];
   let noStats = 0;
 
@@ -302,7 +294,7 @@ async function main() {
 
   results.sort((a, b) => new Date(b.sendDate) - new Date(a.sendDate));
 
-  console.log('\n[4/4] Writing output...');
+  console.log('\n[3/3] Writing output...');
   const brandStats = buildBrandStats(results);
   const totalDelivered = results.reduce((s, e) => s + e.delivered, 0);
 
