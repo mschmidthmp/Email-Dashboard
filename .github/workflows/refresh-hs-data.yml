@@ -1,6 +1,11 @@
 name: Refresh HubSpot Email Stats
 
 on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - email_stats.json
   schedule:
     - cron: '0 11 * * *'
   workflow_dispatch:
