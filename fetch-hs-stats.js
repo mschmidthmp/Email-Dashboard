@@ -9,16 +9,15 @@
  *   statistics, so every email fell through to "no stats object returned" and the
  *   output was always an empty list with no error raised.
  *
- *   v3 has no lifetime-stats endpoint. Statistics live at
- *   /marketing/v3/emails/statistics/list and REQUIRE a time span. To get per-email
- *   numbers you filter that endpoint to a single emailId and read `aggregate`.
- *   That is what this version does.
+ *   HubSpot now publishes the statistics endpoint under a date-versioned route.
+ *   Use the current route and the documented ISO 8601 date-time query values.
+ *   Each request can still be filtered to a single emailId to read `aggregate`.
  *
  * Required credential:
  *   HUBSPOT_TOKEN (or HUBSPOT_ACCESS_TOKEN / HUBSPOT_SERVICE_KEY / HUBSPOT_API_KEY)
  *   Must be a private app access token sent as "Authorization: Bearer <token>".
  *
- * Required HubSpot scope: content
+ * Required HubSpot scope: content, marketing-email, or transactional-email
  *
  * Optional env:
  *   HUBSPOT_STATS_START     ISO date to treat as "all time". Default 2019-01-01.
@@ -35,7 +34,9 @@ const fs = require('fs');
 
 const BASE = 'https://api.hubapi.com';
 const OUTPUT_FILE = process.env.OUTPUT_FILE || 'email_stats.json';
-const MAX_PAGES = Number(process.env.HUBSPOT_MAX_PAGES || 60);
+const MAX_PAGES = Number(process.env.HUBSPOT_MAX_PAGES || 100);
+const STATS_API_VERSION = process.env.HUBSPOT_API_VERSION || '2026-09';
+const STATS_PATH = process.env.HUBSPOT_STATS_PATH || `/marketing/emails/${STATS_API_VERSION}/statistics/list`;
 const PAGE_LIMIT = Number(process.env.HUBSPOT_PAGE_LIMIT || 100);
 const REQUEST_DELAY_MS = Number(process.env.HUBSPOT_REQUEST_DELAY_MS || 110);
 const STATS_LIMIT = Number(process.env.HUBSPOT_STATS_LIMIT || 0);
@@ -84,7 +85,7 @@ function getErrorMessage(status, body, url) {
     return `${base} Authentication failed. This script needs a private app access token used as a Bearer token, not a legacy hapikey.`;
   }
   if (status === 403 || category === 'MISSING_SCOPES') {
-    return `${base} Authorization failed. Confirm the token has the "content" scope. See https://developers.hubspot.com/scopes`;
+    return `${base} Authorization failed. Confirm the token has one of the Marketing Emails API scopes: "content", "marketing-email", or "transactional-email". See https://developers.hubspot.com/scopes`;
   }
   return base;
 }
@@ -140,44 +141,35 @@ async function fetchAllEmails() {
 }
 
 /**
- * The statistics endpoint has had timestamp-parsing quirks across accounts.
- * Probe the accepted format once, then reuse it for every subsequent call.
+ * The date-versioned statistics endpoint requires ISO 8601 date-time values.
  */
-let TS_FORMAT = null;
+const TS_FORMAT = 'iso-datetime';
 
-function tsVariants(startISO, endISO) {
-  const s = new Date(startISO), e = new Date(endISO);
-  return [
-    { name: 'iso-datetime', start: s.toISOString().replace(/\.\d{3}Z$/, 'Z'), end: e.toISOString().replace(/\.\d{3}Z$/, 'Z') },
-    { name: 'epoch-millis', start: String(s.getTime()), end: String(e.getTime()) },
-    { name: 'iso-date',     start: startISO.slice(0, 10), end: endISO.slice(0, 10) },
-  ];
-}
-
-async function probeTimestampFormat(startISO, endISO) {
-  for (const v of tsVariants(startISO, endISO)) {
-    const res = await hubspotGet('/marketing/v3/emails/statistics/list',
-      { startTimestamp: v.start, endTimestamp: v.end }, { allowBadRequest: true });
-    if (res && !res.__error) {
-      console.log(`  Timestamp format accepted: ${v.name}`);
-      TS_FORMAT = v.name;
-      return res;
-    }
-    console.warn(`  Format ${v.name} rejected: ${res?.__error?.slice(0, 110)}`);
-    await sleep(REQUEST_DELAY_MS);
+function statsParams(startISO, endISO, emailId) {
+  const start = new Date(startISO);
+  const end = new Date(endISO);
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    throw new Error(`Invalid stats window. Start: ${startISO}; end: ${endISO}`);
   }
-  throw new Error('No accepted timestamp format for /marketing/v3/emails/statistics/list.');
+
+  return {
+    startTimestamp: start.toISOString(),
+    endTimestamp: end.toISOString(),
+    ...(emailId !== undefined ? { emailIds: [emailId] } : {}),
+  };
 }
 
-function tsFor(startISO, endISO) {
-  const v = tsVariants(startISO, endISO).find(x => x.name === TS_FORMAT);
-  return { startTimestamp: v.start, endTimestamp: v.end };
+async function fetchPortalStats(startISO, endISO) {
+  return hubspotGet(STATS_PATH, statsParams(startISO, endISO));
 }
 
-/** Per-email stats: filter statistics/list to one emailId, read `aggregate`. */
+/** Per-email stats: filter statistics/list to one emailId, read aggregate. */
 async function fetchEmailStats(emailId, startISO, endISO) {
-  const res = await hubspotGet('/marketing/v3/emails/statistics/list',
-    { ...tsFor(startISO, endISO), emailIds: [emailId] }, { allowBadRequest: true });
+  const res = await hubspotGet(
+    STATS_PATH,
+    statsParams(startISO, endISO, emailId),
+    { allowBadRequest: true }
+  );
   if (!res || res.__error) return null;
   return res.aggregate || null;
 }
@@ -270,7 +262,7 @@ async function main() {
   console.log(`Total emails: ${allEmails.length}`);
 
   if (!allEmails.length) {
-    throw new Error('Email list came back empty. The token is valid but sees no marketing emails. Check that it belongs to the correct HubSpot portal and has the "content" scope.');
+    throw new Error('Email list came back empty. The token is valid but sees no marketing emails. Check that it belongs to the correct HubSpot portal and has one of the Marketing Emails API scopes.');
   }
 
   // Only emails that actually went out can have stats.
@@ -281,8 +273,8 @@ async function main() {
   const targets = STATS_LIMIT > 0 ? candidates.slice(0, STATS_LIMIT) : candidates;
   if (STATS_LIMIT > 0) console.log(`Capped to ${targets.length} by HUBSPOT_STATS_LIMIT`);
 
-  console.log('\n[2/4] Probing statistics endpoint...');
-  const portalAggregate = await probeTimestampFormat(STATS_START, endISO);
+  console.log('\n[2/4] Fetching statistics endpoint...');
+  const portalAggregate = await fetchPortalStats(STATS_START, endISO);
   const pc = portalAggregate?.aggregate?.counters || {};
   console.log(`  Portal-wide check: ${(pc.delivered ?? 0).toLocaleString()} delivered, ${(pc.open ?? 0).toLocaleString()} opens`);
 
