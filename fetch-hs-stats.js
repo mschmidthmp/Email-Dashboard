@@ -23,7 +23,8 @@
  *   HUBSPOT_STATS_START     ISO date to treat as "all time". Default 2019-01-01.
  *   HUBSPOT_MAX_PAGES       Email list pages to walk. Default 100.
  *   HUBSPOT_PAGE_LIMIT      Emails per page. Default 100.
- *   HUBSPOT_REQUEST_DELAY_MS Delay between stat calls. Default 110 (approx 9/sec).
+ *   HUBSPOT_REQUEST_DELAY_MS Delay between stat batches. Default 110 ms.
+ *   HUBSPOT_STATS_CONCURRENCY Parallel stat calls per batch. Default 8.
  *   HUBSPOT_STATS_LIMIT     Cap emails fetched for stats. Default 0 (no cap).
  *   OUTPUT_FILE             Default email_stats.json
  */
@@ -39,6 +40,7 @@ const STATS_API_VERSION = process.env.HUBSPOT_API_VERSION || '2026-03';
 const STATS_PATH = process.env.HUBSPOT_STATS_PATH || `/marketing/emails/${STATS_API_VERSION}/statistics/list`;
 const PAGE_LIMIT = Number(process.env.HUBSPOT_PAGE_LIMIT || 100);
 const REQUEST_DELAY_MS = Number(process.env.HUBSPOT_REQUEST_DELAY_MS || 110);
+const STATS_CONCURRENCY = Math.max(1, Number(process.env.HUBSPOT_STATS_CONCURRENCY || 8) || 8);
 const STATS_LIMIT = Number(process.env.HUBSPOT_STATS_LIMIT || 0);
 const STATS_START = process.env.HUBSPOT_STATS_START || '2019-01-01';
 
@@ -274,49 +276,24 @@ async function main() {
   const results = [];
   let noStats = 0;
 
-  for (const [i, email] of targets.entries()) {
-    const aggregate = await fetchEmailStats(email.id, STATS_START, endISO);
-    if (aggregate?.counters && (aggregate.counters.delivered > 0 || aggregate.counters.sent > 0)) {
-      results.push(buildEmailResult(email, aggregate));
-    } else {
-      noStats++;
+  for (let i = 0; i < targets.length; i += STATS_CONCURRENCY) {
+    const batch = targets.slice(i, i + STATS_CONCURRENCY);
+    const batchResults = await Promise.all(batch.map(async email => {
+      const aggregate = await fetchEmailStats(email.id, STATS_START, endISO);
+      if (aggregate?.counters && (aggregate.counters.delivered > 0 || aggregate.counters.sent > 0)) {
+        return buildEmailResult(email, aggregate);
+      }
+      return null;
+    }));
+
+    for (const item of batchResults) {
+      if (item) results.push(item);
+      else noStats++;
     }
+
     await sleep(REQUEST_DELAY_MS);
-    const n = i + 1;
+    const n = Math.min(i + batch.length, targets.length);
     if (n % 100 === 0 || n === targets.length) {
       console.log(`  ${n}/${targets.length} · kept ${results.length} · skipped ${noStats}`);
     }
   }
-
-  if (!results.length) {
-    throw new Error('Statistics endpoint responded but returned no delivered volume for any email. Widen HUBSPOT_STATS_START or confirm this portal has sent marketing emails.');
-  }
-
-  results.sort((a, b) => new Date(b.sendDate) - new Date(a.sendDate));
-
-  console.log('\n[3/3] Writing output...');
-  const brandStats = buildBrandStats(results);
-  const totalDelivered = results.reduce((s, e) => s + e.delivered, 0);
-
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
-    generatedAt: new Date().toISOString(),
-    generatedBy: 'fetch-hs-stats',
-    statsWindow: { start: STATS_START, end: endISO },
-    timestampFormat: TS_FORMAT,
-    totalEmails: results.length,
-    totalDelivered,
-    emailsWithoutStats: noStats,
-    brandStats,
-    emails: results,
-  }, null, 2), 'utf8');
-
-  console.log(`Done. ${results.length} emails, ${totalDelivered.toLocaleString()} delivered -> ${OUTPUT_FILE}`);
-  console.log(`Brands: ${brandStats.map(b => `${b.brand}(${b.totalSent})`).join(', ')}`);
-}
-
-main().catch(error => {
-  console.error('\nFatal error:', scrub(error.message));
-  console.error('Token setup: the HUBSPOT_TOKEN secret must be a HubSpot Private App access token with one of the Marketing Emails API scopes: "content", "marketing-email", or "transactional-email".');
-  console.error('HubSpot scopes: https://developers.hubspot.com/scopes');
-  process.exitCode = 1;
-});
