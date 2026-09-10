@@ -21,7 +21,7 @@
  *
  * Optional env:
  *   HUBSPOT_STATS_START     ISO date to treat as "all time". Default 2019-01-01.
- *   HUBSPOT_MAX_PAGES       Email list pages to walk. Default 60.
+ *   HUBSPOT_MAX_PAGES       Email list pages to walk. Default 100.
  *   HUBSPOT_PAGE_LIMIT      Emails per page. Default 100.
  *   HUBSPOT_REQUEST_DELAY_MS Delay between stat calls. Default 110 (approx 9/sec).
  *   HUBSPOT_STATS_LIMIT     Cap emails fetched for stats. Default 0 (no cap).
@@ -324,7 +324,7 @@ async function main() {
 
 main().catch(error => {
   console.error('\nFatal error:', scrub(error.message));
-  console.error('Token setup: the HUBSPOT_TOKEN secret must be a HubSpot Private App access token with the "content" scope.');
+  console.error('Token setup: the HUBSPOT_TOKEN secret must be a HubSpot Private App access token with one of the Marketing Emails API scopes: "content", "marketing-email", or "transactional-email".');
   console.error('HubSpot scopes: https://developers.hubspot.com/scopes');
   process.exitCode = 1;
 });
