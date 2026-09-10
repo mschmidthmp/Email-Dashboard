@@ -297,3 +297,37 @@ async function main() {
       console.log(`  ${n}/${targets.length} · kept ${results.length} · skipped ${noStats}`);
     }
   }
+
+
+  if (!results.length) {
+    throw new Error('Statistics endpoint responded but returned no delivered volume for any email. Widen HUBSPOT_STATS_START or confirm this portal has sent marketing emails.');
+  }
+
+  results.sort((a, b) => new Date(b.sendDate) - new Date(a.sendDate));
+
+  console.log('\n[3/3] Writing output...');
+  const brandStats = buildBrandStats(results);
+  const totalDelivered = results.reduce((s, e) => s + e.delivered, 0);
+
+  fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
+    generatedAt: new Date().toISOString(),
+    generatedBy: 'fetch-hs-stats',
+    statsWindow: { start: STATS_START, end: endISO },
+    timestampFormat: TS_FORMAT,
+    totalEmails: results.length,
+    totalDelivered,
+    emailsWithoutStats: noStats,
+    brandStats,
+    emails: results,
+  }, null, 2), 'utf8');
+
+  console.log(`Done. ${results.length} emails, ${totalDelivered.toLocaleString()} delivered -> ${OUTPUT_FILE}`);
+  console.log(`Brands: ${brandStats.map(b => `${b.brand}(${b.totalSent})`).join(', ')}`);
+}
+
+main().catch(error => {
+  console.error('\nFatal error:', scrub(error.message));
+  console.error('Token setup: the HUBSPOT_TOKEN secret must be a HubSpot Private App access token with one of the Marketing Emails API scopes: "content", "marketing-email", or "transactional-email".');
+  console.error('HubSpot scopes: https://developers.hubspot.com/scopes');
+  process.exitCode = 1;
+});
