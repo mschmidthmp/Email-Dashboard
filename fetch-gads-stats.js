@@ -18,8 +18,9 @@ const ACCOUNT_ID = process.env.GADS_ACCOUNT_ID || '3238274495';
 const ENDPOINT   = 'https://api.supermetrics.com/enterprise/v2/query/data/json';
 
 if (!API_KEY) {
-  console.error('FATAL: SUPERMETRICS_API_KEY is not set.');
-  process.exit(1);
+  console.log('SKIPPED: SUPERMETRICS_API_KEY is not set yet. Leaving the existing google_ads_stats.json in place.');
+  console.log('Add a real Supermetrics API key (hub.supermetrics.com > API) as the SUPERMETRICS_API_KEY repo secret to enable this refresh.');
+  process.exit(0);
 }
 
 // ---- Brand mapping keyed on the Google Ads campaign ID embedded in campaign names ----
