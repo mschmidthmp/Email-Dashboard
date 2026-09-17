@@ -2559,7 +2559,7 @@ function renderTop15() {
       <td style="max-width:280px;font-size:11px;">${r.n}</td>
       <td>${r.d.toLocaleString()}</td>
       <td class="${r.o>=22?'good':r.o>=15?'warn':'bad'}">${r.o}%</td>
-      <td class="${(r.k||0)>=2.5?'good':(r.k||0)>=1?'warn':'bad'}">${r.k||0}%</td>
+      <td class="${(r.c||0)>=2.5?'good':(r.c||0)>=1?'warn':'bad'}">${r.c||0}%</td>
       <td>${r.dt}</td>
       <td style="font-size:11px;color:#374151;max-width:200px;">${reasons[i] || ''}</td>
     </tr>`;
@@ -2577,7 +2577,7 @@ function renderBelow() {
       <td style="font-size:11px;">${r.n}</td>
       <td>${r.d.toLocaleString()}</td>
       <td class="bad">${r.o}%</td>
-      <td class="bad">${r.k||0}%</td>
+      <td class="bad">${r.c||0}%</td>
       <td>${r.dt}</td>
       <td style="font-size:11px;color:#374151;">${r.fix}</td>
     </tr>`;
