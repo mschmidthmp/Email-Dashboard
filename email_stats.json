@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-27T16:25:05.333Z",
+  "generatedAt": "2026-09-27T16:40:19.564Z",
   "generatedBy": "fetch-hs-stats",
   "statsWindow": {
     "start": "2019-01-01",
-    "end": "2026-09-27T16:13:25.324Z"
+    "end": "2026-09-27T16:29:45.397Z"
   },
   "timestampFormat": "iso-datetime",
   "totalEmails": 8779,
