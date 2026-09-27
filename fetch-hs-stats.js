@@ -172,7 +172,6 @@ async function fetchEmailStats(emailId, startISO, endISO) {
   return res.aggregate || null;
 }
 
-const pct = v => v ? +(Number(v) * 100).toFixed(2) : 0;
 const firstValue = (...v) => v.find(x => x !== undefined && x !== null && x !== '') || '';
 
 function buildEmailResult(email, aggregate) {
@@ -202,19 +201,19 @@ function buildEmailResult(email, aggregate) {
     softBounces: counters.softbounced ?? counters.softBounced ?? 0,
     unsubscribes: counters.unsubscribed ?? 0,
     spamReports: counters.spamreport ?? 0,
-    // Prefer HubSpot's ratios; fall back to computing from counters.
-    openRate: ratios.openratio != null ? pct(ratios.openratio)
-            : ratios.openRate  != null ? pct(ratios.openRate)
-            : delivered ? +((opens / delivered) * 100).toFixed(2) : 0,
-    clickRate: ratios.clickratio != null ? pct(ratios.clickratio)
-             : ratios.clickRate  != null ? pct(ratios.clickRate)
-             : delivered ? +((clicks / delivered) * 100).toFixed(2) : 0,
-    ctor: ratios.clickthroughratio != null ? pct(ratios.clickthroughratio)
-        : ratios.clickThroughRate  != null ? pct(ratios.clickThroughRate)
-        : opens ? +((clicks / opens) * 100).toFixed(2) : 0,
-    bounceRate: pct(ratios.bounceratio ?? ratios.bounceRate),
-    unsubRate: pct(ratios.unsubscribedratio ?? ratios.unsubscribedRate),
-    spamRate: pct(ratios.spamreportratio ?? ratios.spamreportRate),
+    // NOTE: HubSpot's `ratios` object is inconsistent across email types/API
+    // versions — for most PUBLISHED emails it comes back already expressed as
+    // a 0-100 percentage, not a 0-1 fraction. The previous version always did
+    // pct(v) = v*100 on it, which double-scaled those values (e.g. a real
+    // 26.27% open rate was stored as 2627). Raw counters are unambiguous
+    // integers, so every rate is computed directly from them instead of
+    // trusting the ratios object's scale.
+    openRate: delivered ? +((opens / delivered) * 100).toFixed(2) : 0,
+    clickRate: delivered ? +((clicks / delivered) * 100).toFixed(2) : 0,
+    ctor: opens ? +((clicks / opens) * 100).toFixed(2) : 0,
+    bounceRate: delivered ? +(((counters.hardbounced ?? counters.hardBounced ?? 0) + (counters.softbounced ?? counters.softBounced ?? 0)) / delivered * 100).toFixed(2) : 0,
+    unsubRate: delivered ? +((counters.unsubscribed ?? 0) / delivered * 100).toFixed(2) : 0,
+    spamRate: delivered ? +((counters.spamreport ?? 0) / delivered * 100).toFixed(2) : 0,
   };
 }
 
