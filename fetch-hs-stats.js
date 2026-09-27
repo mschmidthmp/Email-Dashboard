@@ -33,7 +33,7 @@
 
 const fs = require('fs');
 
-const BASE = 'https://api.hubapi.com';
+const BASE = process.env.HUBSPOT_API_BASE || 'https://api.hubapi.com';
 const OUTPUT_FILE = process.env.OUTPUT_FILE || 'email_stats.json';
 const MAX_PAGES = Number(process.env.HUBSPOT_MAX_PAGES || 100);
 const STATS_API_VERSION = process.env.HUBSPOT_API_VERSION || '2026-03';
@@ -124,21 +124,133 @@ async function hubspotGet(path, params = {}, options = {}) {
   }
 }
 
-async function fetchAllEmails() {
+/**
+ * Walk one page-cursor sequence to exhaustion (or MAX_PAGES), for a fixed set
+ * of extra query params (e.g. a date window and/or sort order).
+ * `allowBadRequest` lets the caller detect an unsupported param combo (HubSpot
+ * returns 400) instead of crashing the whole run.
+ */
+async function walkEmailPages(extraParams, label) {
   const all = [];
   let after, page = 0;
   do {
-    const params = { limit: PAGE_LIMIT };
+    const params = { limit: PAGE_LIMIT, ...extraParams };
     if (after) params.after = after;
-    const data = await hubspotGet('/marketing/v3/emails', params);
+    const data = await hubspotGet('/marketing/v3/emails', params, { allowBadRequest: true });
+    if (data && data.__error) return { results: all, error: data.__error };
     const results = data?.results || [];
     all.push(...results);
     after = data?.paging?.next?.after;
     page++;
-    console.log(`  Page ${page}: ${results.length} emails (total ${all.length})`);
   } while (after && page < MAX_PAGES);
+  if (after) console.warn(`  WARN: ${label} stopped at HUBSPOT_MAX_PAGES=${MAX_PAGES} with more results remaining. Raise HUBSPOT_MAX_PAGES.`);
+  return { results: all, error: null };
+}
 
-  if (after) console.warn(`  WARN: stopped at HUBSPOT_MAX_PAGES=${MAX_PAGES}. Raise it to fetch more.`);
+/**
+ * WHY THIS IS WINDOWED BY YEAR (as opposed to one long walk)
+ *   HubSpot's v3 list endpoints impose a hard ceiling (~10,000 records) on how
+ *   far a single sequential `after`-cursor walk can advance, even when more
+ *   matching rows exist beyond it — the cursor just stops. The previous
+ *   version walked the entire portal history in one pass, in whatever order
+ *   the API defaults to (observed to be oldest-created-first). Once the
+ *   portal's total email count crossed that ceiling, the walk exhausted
+ *   itself inside 2020-2022 and never reached 2023+ campaigns at all — which
+ *   is exactly what a run of this script showed: 8,765 of 8,779 emails dated
+ *   2020-2022, and only 14 total across 2023-2026.
+ *
+ *   Fixing this for good means no single walk should ever need to cross the
+ *   ceiling. Splitting the fetch into one walk per calendar year (using the
+ *   documented `createdAfter`/`createdBefore` filters, newest year first, and
+ *   `sort=-createdAt` as a second line of defense) keeps every individual
+ *   walk far under 10,000 rows — the busiest year on record so far is ~3,200.
+ *
+ *   Caveat: this windows on the email object's *creation* date, not its send
+ *   date. For this portal's one-email-per-campaign pattern those are almost
+ *   always close together, but a template object created long before a later
+ *   reuse could in theory land in the wrong year's window. Recent-year totals
+ *   should be sanity-checked against HubSpot's own reporting occasionally.
+ *
+ *   Resilience: if `createdAfter`/`createdBefore` ever turn out to be
+ *   unsupported by the API (a 400 on the very first window), this falls back
+ *   to a single walk sorted newest-first, and if even `sort` is rejected,
+ *   falls back further to the original unsorted, unfiltered walk — so a
+ *   documentation mismatch degrades gracefully instead of breaking the job.
+ */
+async function fetchAllEmails() {
+  const byId = new Map();
+  const startYear = Number(STATS_START.slice(0, 4)) || 2019;
+  const endYear = new Date().getUTCFullYear();
+  const nowISO = new Date().toISOString();
+
+  let windowingWorked = true;
+  for (let y = endYear; y >= startYear; y--) {
+    const wStartISO = new Date(y === startYear ? STATS_START : `${y}-01-01T00:00:00.000Z`).toISOString();
+    const wEndISO = y === endYear ? nowISO : new Date(`${y + 1}-01-01T00:00:00.000Z`).toISOString();
+
+    const { results, error } = await walkEmailPages(
+      { sort: '-createdAt', createdAfter: wStartISO, createdBefore: wEndISO },
+      `${y} window`
+    );
+
+    if (error) {
+      console.warn(`  WARN: date-windowed email listing failed for ${y} (${error}). Abandoning per-year windowing and falling back to a single sorted walk.`);
+      windowingWorked = false;
+      byId.clear();
+      break;
+    }
+
+    let added = 0;
+    for (const r of results) if (!byId.has(r.id)) { byId.set(r.id, r); added++; }
+    console.log(`  ${y}: ${results.length} emails returned, ${added} new (running total ${byId.size})`);
+
+    // Cheap self-check, run once we have a window with a real (non-"now")
+    // upper bound: if createdBefore isn't actually being enforced by the API,
+    // this year's results will include emails created after wEndISO. If so,
+    // that single walk already contains the full newest-first history (bounded
+    // by MAX_PAGES), so further per-year windows would just be redundant,
+    // rate-limit-risking repeats of the same request. Stop here instead.
+    if (y < endYear) {
+      const leaked = results.some(r => r.createdAt && new Date(r.createdAt).toISOString() > wEndISO);
+      if (leaked) {
+        // IMPORTANT: don't just keep what this window happened to return — it
+        // was requested with createdAfter=${y}-01-01, so even though it's not
+        // respecting createdBefore, it's still MISSING everything created
+        // before ${y}-01-01 (all older years). The only safe move is to
+        // discard the partial per-year results and fall through to the Tier-2
+        // fallback below, which re-fetches from the true start of the whole
+        // STATS_START..now range in one sorted walk.
+        console.warn(`  WARN: createdBefore does not appear to be enforced by the API — the ${y} window returned newer emails too. Abandoning per-year windowing (it would miss everything before ${y}) and falling back to one full sorted walk instead.`);
+        windowingWorked = false;
+        byId.clear();
+        break;
+      }
+    }
+  }
+
+  // --- Fallback tiers, only used if per-year windowing itself errored out. ---
+  if (!windowingWorked) {
+    const { results, error } = await walkEmailPages({ sort: '-createdAt' }, 'full sorted walk');
+    if (!error) {
+      for (const r of results) if (!byId.has(r.id)) byId.set(r.id, r);
+    } else {
+      console.warn(`  WARN: sorted email listing failed (${error}). Falling back to the original unsorted walk — recent years may be under-represented if the portal exceeds the API's pagination ceiling.`);
+      const { results: legacyResults } = await walkEmailPages({}, 'legacy unsorted walk');
+      for (const r of legacyResults) if (!byId.has(r.id)) byId.set(r.id, r);
+    }
+  }
+
+  const all = Array.from(byId.values());
+
+  // Diagnostic breakdown so future runs surface coverage gaps immediately in
+  // the Action log, instead of silently shipping a partial dataset again.
+  const byYear = {};
+  for (const e of all) {
+    const y = String(e.createdAt || e.updatedAt || '').slice(0, 4) || 'unknown';
+    byYear[y] = (byYear[y] || 0) + 1;
+  }
+  console.log(`  Coverage by created-year: ${Object.entries(byYear).sort(([a], [b]) => a.localeCompare(b)).map(([y, n]) => `${y}=${n}`).join(', ')}`);
+
   return all;
 }
 

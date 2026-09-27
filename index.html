@@ -445,6 +445,7 @@ td{padding:7px 10px;border-bottom:1px solid #e2e8f0;vertical-align:middle;}
 <div id="t-segments" class="tc">
 
   <div class="sh">🎯 Master List Sizes — HubSpot Segments</div>
+  <div style="font-size:11px;color:#94a3b8;margin:-8px 0 12px;">📌 Reference figures, last verified Aug 20, 2026. List/segment membership isn't returned by the Marketing Emails API this dashboard's live feed uses — going live here would need a separate HubSpot Contacts/Lists API integration (a distinct follow-up, not yet built).</div>
   <div class="seg-grid">
     <div class="seg-card" style="border-top:3px solid #1e40af;">
       <div class="seg-name" style="color:#1e40af;">Psych Congress (USPC)</div>
@@ -479,6 +480,7 @@ td{padding:7px 10px;border-bottom:1px solid #e2e8f0;vertical-align:middle;}
   </div>
 
   <div class="sh">🔬 Engagement Segments — 2026 Active Lists</div>
+  <div style="font-size:11px;color:#94a3b8;margin:-8px 0 12px;">📌 Reference figures — same List/Segment API limitation as above.</div>
   <div style="overflow-x:auto;">
   <table>
     <thead><tr><th>Brand</th><th>Segment Name</th><th>List Size</th><th>Type</th><th>Funnel Stage</th><th>Recommended Action</th></tr></thead>
@@ -503,6 +505,7 @@ td{padding:7px 10px;border-bottom:1px solid #e2e8f0;vertical-align:middle;}
   </div>
 
   <div class="sh">📉 Funnel Stage Performance — Avg Open Rate by Stage</div>
+  <div id="segFunnelNote" style="font-size:11px;color:#94a3b8;margin:-6px 0 10px;"></div>
   <div class="cards">
     <div class="card" style="border-top:3px solid #166534;">
       <div class="card-h">BOFU (Bottom of Funnel)</div>
@@ -511,8 +514,8 @@ td{padding:7px 10px;border-bottom:1px solid #e2e8f0;vertical-align:middle;}
     </div>
     <div class="card" style="border-top:3px solid #166534;">
       <div class="card-h">Registrants</div>
-      <div class="card-v" style="color:#166534;">35–57%</div>
-      <div class="card-s">Open rate range · 1,296 registrants · Highest click rates</div>
+      <div class="card-v" id="seg-reg-rate" style="color:#166534;">35–57%</div>
+      <div class="card-s" id="seg-reg-sub">Open rate range · 1,296 registrants · Highest click rates</div>
     </div>
     <div class="card" style="border-top:3px solid var(--orange);">
       <div class="card-h">MOFU (Mid Funnel)</div>
@@ -526,8 +529,8 @@ td{padding:7px 10px;border-bottom:1px solid #e2e8f0;vertical-align:middle;}
     </div>
     <div class="card" style="border-top:3px solid var(--blue);">
       <div class="card-h">Alumni</div>
-      <div class="card-v" style="color:var(--blue);">8–22%</div>
-      <div class="card-s">Past attendees · Highest rebuy probability</div>
+      <div class="card-v" id="seg-alumni-rate" style="color:var(--blue);">8–22%</div>
+      <div class="card-s" id="seg-alumni-sub">Past attendees · Highest rebuy probability</div>
     </div>
   </div>
 
@@ -2566,7 +2569,61 @@ function renderBrandGrid() {
 }
 
 // ---- TOP 15 ----
+// Rows currently on screen for Top 15 / Needing Attention, in the plain
+// {b,n,d,o,c,dt} shape exportExcel() already expects — populated by whichever
+// branch (live or static fallback) renderTop15()/renderBelow() actually took,
+// so the Excel export always matches what's on screen instead of silently
+// re-exporting the old hardcoded snapshot.
+let TOP15_RENDERED = [];
+let BELOW_RENDERED = [];
+
+// Same adequacy-guard pattern as updateKPIs()/renderOverviewLive(): only rank
+// live data once there's enough delivered volume in the current scope
+// (portfolio-wide or the selected brand) that a couple of tiny/test sends
+// can't dominate a "top performers" list. Below that bar, both lists fall
+// back to the last verified (Aug 20, 2026) reference snapshot below.
+const PERFORMANCE_LIST_MIN_EMAILS = 30;
+const PERFORMANCE_LIST_MIN_BRAND_EMAILS = 10;
+const PERFORMANCE_LIST_MIN_DELIVERED = 200; // ignore tiny/test sends when ranking
+
+function getScopedLiveEmailsForLists() {
+  const stats = window.HS_EMAIL_STATS;
+  if (!stats || !Array.isArray(stats.emails)) return null;
+  const all = stats.emails.map(normalizeLiveEmail).filter(e => e.delivered > 0);
+  const scoped = scopeEmailsToBrand(all, activeBrand);
+  const minRequired = activeBrand === 'ALL' ? PERFORMANCE_LIST_MIN_EMAILS : PERFORMANCE_LIST_MIN_BRAND_EMAILS;
+  if (scoped.length < minRequired) return null;
+  return scoped;
+}
+
 function renderTop15() {
+  const tb = document.getElementById('top15Body');
+  const live = getScopedLiveEmailsForLists();
+
+  if (live) {
+    const ranked = live
+      .filter(e => e.delivered >= PERFORMANCE_LIST_MIN_DELIVERED)
+      .sort((a, b) => b.openRate - a.openRate)
+      .slice(0, 15);
+    TOP15_RENDERED = ranked.map(r => ({ b: r.brand, n: r.name, d: r.delivered, o: r.openRate, c: r.clickRate, dt: r.dateStr }));
+    tb.innerHTML = ranked.map((r, i) => {
+      const b = BRANDS[r.brand] || { color: r.color, bg: r.bg, label: r.brandLabel };
+      const note = r.campaignName ? `Campaign: ${r.campaignName}` : (r.ctor ? `${r.ctor}% CTOR` : '');
+      return `<tr>
+        <td style="font-weight:700;color:${b.color}">${i+1}</td>
+        <td><span class="pill" style="background:${b.bg};color:${b.color}">${b.label}</span></td>
+        <td style="max-width:280px;font-size:11px;">${r.name}</td>
+        <td>${r.delivered.toLocaleString()}</td>
+        <td class="${r.openRate>=22?'good':r.openRate>=15?'warn':'bad'}">${r.openRate}%</td>
+        <td class="${r.clickRate>=2.5?'good':r.clickRate>=1?'warn':'bad'}">${r.clickRate}%</td>
+        <td>${r.dateStr}</td>
+        <td style="font-size:11px;color:#374151;max-width:200px;">${note}</td>
+      </tr>`;
+    }).join('');
+    return;
+  }
+
+  // ---- Fallback: last verified static snapshot (live data too thin to trust) ----
   const reasons = [
     'Scholarship acceptance — hyper-personal, immediate value',
     'COVID crisis email — urgency + relevance + trust',
@@ -2585,7 +2642,7 @@ function renderTop15() {
     'Post-event thank you — warm + CE certificate'
   ];
   const filtered = activeBrand === 'ALL' ? TOP15 : TOP15.filter(r => r.b === activeBrand);
-  const tb = document.getElementById('top15Body');
+  TOP15_RENDERED = filtered;
   tb.innerHTML = filtered.map((r, i) => {
     const b = BRANDS[r.b] || {color:'#000',bg:'#fff',label:r.b};
     return `<tr>
@@ -2601,10 +2658,108 @@ function renderTop15() {
   }).join('');
 }
 
+// ---- SEGMENT ANALYSIS: FUNNEL STAGE PERFORMANCE (partial live wiring) ----
+// Only Registrants and Alumni are wired to live data here. HubSpot's
+// Marketing Emails API (what fetch-hs-stats.js pulls) has no funnel-stage or
+// list/segment field on the email object itself — TOFU/MOFU/BOFU is a
+// property of which HubSpot *list* a send targeted, not of the email. The
+// only signal available from what we already fetch is Michelle's own naming
+// convention, and checking that directly against the live portal found real,
+// consistent "Registrant"/"Alumni" naming (see fetch-hs-stats.js's output)
+// but zero "TOFU"/"MOFU"/"BOFU" tokens anywhere in current campaign names or
+// subjects. Rather than invent a classification with no signal behind it,
+// those three stages stay on the last verified reference ranges — going
+// fully live here would need HubSpot's Contacts/Lists API (a separate,
+// larger integration) to know actual list membership per send.
+const SEGMENT_STAGE_MIN_EMAILS = 15;
+const SEGMENT_STAGE_MIN_DELIVERED = 200; // ignore tiny/test sends when averaging
+// Captured once, the first time this runs, straight from the static HTML —
+// not a re-derived guess — so a fallback (adequacy dropping below the
+// threshold after a prior live render already overwrote these elements) can
+// actually restore the last verified reference text instead of leaving
+// whatever live numbers happened to be there stale on screen.
+let SEG_STAGE_STATIC_TEXT = null;
+function renderSegmentFunnelStages() {
+  const noteEl = document.getElementById('segFunnelNote');
+  const regValEl = document.getElementById('seg-reg-rate'), regSubEl = document.getElementById('seg-reg-sub');
+  const alumniValEl = document.getElementById('seg-alumni-rate'), alumniSubEl = document.getElementById('seg-alumni-sub');
+  if (!noteEl) return;
+  if (!SEG_STAGE_STATIC_TEXT) {
+    SEG_STAGE_STATIC_TEXT = {
+      reg: { val: regValEl ? regValEl.textContent : '', sub: regSubEl ? regSubEl.textContent : '' },
+      alumni: { val: alumniValEl ? alumniValEl.textContent : '', sub: alumniSubEl ? alumniSubEl.textContent : '' },
+    };
+  }
+
+  const stats = window.HS_EMAIL_STATS;
+  if (!stats || !Array.isArray(stats.emails)) { noteEl.textContent = ''; return; }
+
+  const emails = stats.emails.map(normalizeLiveEmail)
+    .filter(e => e.brand !== 'OTHER' && e.delivered >= SEGMENT_STAGE_MIN_DELIVERED);
+  const matchesOf = re => emails.filter(e => re.test(e.name) || re.test(e.subject));
+
+  const stages = {
+    reg: matchesOf(/registrants?/i),
+    alumni: matchesOf(/alumni/i),
+  };
+
+  const applyStage = (list, valEl, subEl, label, staticText) => {
+    if (list.length < SEGMENT_STAGE_MIN_EMAILS) {
+      // Adequacy guard failed (or failed again after a prior live render) —
+      // explicitly restore the last verified reference text rather than
+      // leaving a stale live number of unknown provenance on screen.
+      if (valEl) valEl.textContent = staticText.val;
+      if (subEl) subEl.textContent = staticText.sub;
+      return false;
+    }
+    const rates = list.map(e => e.openRate);
+    const avg = rates.reduce((s, v) => s + v, 0) / rates.length;
+    if (valEl) valEl.textContent = avg.toFixed(1) + '%';
+    if (subEl) subEl.textContent = `Live avg · ${list.length} ${label} sends (${Math.min(...rates).toFixed(0)}–${Math.max(...rates).toFixed(0)}% range)`;
+    return true;
+  };
+
+  const regLive = applyStage(stages.reg, regValEl, regSubEl, 'Registrant-named', SEG_STAGE_STATIC_TEXT.reg);
+  const alumniLive = applyStage(stages.alumni, alumniValEl, alumniSubEl, 'Alumni-named', SEG_STAGE_STATIC_TEXT.alumni);
+
+  noteEl.textContent = (regLive || alumniLive)
+    ? '✅ Registrants/Alumni computed live from campaign-name matches. BOFU/MOFU/TOFU have no equivalent naming signal in the live feed, so they still show the last verified reference ranges (see note above).'
+    : `⚠️ Fewer than ${SEGMENT_STAGE_MIN_EMAILS} live Registrant/Alumni-named sends found yet — showing last verified reference ranges for all five stages.`;
+}
+
 // ---- BELOW BENCHMARK ----
 function renderBelow() {
-  const filtered = activeBrand === 'ALL' ? BELOW2026 : BELOW2026.filter(r => r.b === activeBrand);
   const tb = document.getElementById('belowBody');
+  const live = getScopedLiveEmailsForLists();
+
+  if (live) {
+    const avgOpen = live.reduce((s, e) => s + e.openRate, 0) / (live.length || 1);
+    const worst = live
+      .filter(e => e.delivered >= PERFORMANCE_LIST_MIN_DELIVERED)
+      .sort((a, b) => a.openRate - b.openRate)
+      .slice(0, 5);
+    BELOW_RENDERED = worst.map(r => ({ b: r.brand, n: r.name, d: r.delivered, o: r.openRate, c: r.clickRate, dt: r.dateStr }));
+    tb.innerHTML = worst.map(r => {
+      const b = BRANDS[r.brand] || { color: r.color, bg: r.bg, label: r.brandLabel };
+      const gapPts = (avgOpen - r.openRate).toFixed(1);
+      const scopeLabel = activeBrand === 'ALL' ? 'portfolio' : b.label;
+      const fix = `${gapPts}pt below the ${scopeLabel} average open rate (${avgOpen.toFixed(1)}%)${r.campaignName ? ' · Campaign: ' + r.campaignName : ''}`;
+      return `<tr>
+        <td><span class="pill" style="background:${b.bg};color:${b.color}">${b.label}</span></td>
+        <td style="font-size:11px;">${r.name}</td>
+        <td>${r.delivered.toLocaleString()}</td>
+        <td class="bad">${r.openRate}%</td>
+        <td class="bad">${r.clickRate}%</td>
+        <td>${r.dateStr}</td>
+        <td style="font-size:11px;color:#374151;">${fix}</td>
+      </tr>`;
+    }).join('');
+    return;
+  }
+
+  // ---- Fallback: last verified static snapshot (live data too thin to trust) ----
+  const filtered = activeBrand === 'ALL' ? BELOW2026 : BELOW2026.filter(r => r.b === activeBrand);
+  BELOW_RENDERED = filtered;
   tb.innerHTML = filtered.map(r => {
     const b = BRANDS[r.b] || {color:'#000',bg:'#fff',label:r.b};
     return `<tr>
@@ -2655,6 +2810,19 @@ function normalizeLiveEmail(e) {
     state: e.state || '', sent, delivered, opens, clicks, hardBounces, softBounces, unsubscribes, spamReports,
     openRate, clickRate, ctor, bounceRate, unsubRate
   };
+}
+
+// This HubSpot portal is shared across multiple HMP Global business units —
+// roughly 82% of all emails it returns (things like "WGI2021-..." / World GI,
+// a completely different conference) aren't part of this Psych Congress
+// portfolio at all, and fall into detectBrand()'s 'OTHER' catch-all bucket in
+// fetch-hs-stats.js. Every portfolio-wide ("All Brands") live aggregation —
+// KPI strip, overview cards, Top 15 / Needing Attention — must exclude that
+// bucket, or portfolio-wide numbers (and worse, portfolio "top performers")
+// end up dominated by another team's campaigns. A specific brand filter is
+// already an exact match and never includes 'OTHER' regardless.
+function scopeEmailsToBrand(emails, brand) {
+  return brand === 'ALL' ? emails.filter(e => e.brand !== 'OTHER') : emails.filter(e => e.brand === brand);
 }
 
 function normalizeLegacyEmail(r) {
@@ -2786,6 +2954,7 @@ window.showTab = function(el, id) {
     renderEmailTable();
   }
   if (id === 't-hubspot') { renderCampaignTable(); }
+  if (id === 't-segments') { renderSegmentFunnelStages(); }
 };
 
 // ---- BRAND FILTER ----
@@ -2826,7 +2995,7 @@ function updateKPIs() {
   // back to the last verified number — reading as "this brand cratered"
   // rather than "data gap for this period."
   if (liveEmails) {
-    const probeScoped = activeBrand === 'ALL' ? liveEmails : liveEmails.filter(e => e.brand === activeBrand);
+    const probeScoped = scopeEmailsToBrand(liveEmails, activeBrand);
     const probeYear = probeScoped.filter(e => e.dateStr.startsWith(year));
     const minRequired = activeBrand === 'ALL' ? OVERVIEW_MIN_YEAR_EMAILS : 5;
     if (probeYear.length < minRequired) liveEmails = null;
@@ -2863,7 +3032,7 @@ function updateKPIs() {
   // the active brand filter. This replaces the old hardcoded literals that
   // clicking a brand filter (or clicking back to "All Brands") would
   // silently restore, wiping out whatever autoLoadHubSpotStats had set.
-  const scoped = activeBrand === 'ALL' ? liveEmails : liveEmails.filter(e => e.brand === activeBrand);
+  const scoped = scopeEmailsToBrand(liveEmails, activeBrand);
   const yearScoped = scoped.filter(e => e.dateStr.startsWith(year));
   const sum = (arr, k) => arr.reduce((s,e) => s + (e[k]||0), 0);
   const delivered = sum(yearScoped, 'delivered');
@@ -3089,9 +3258,11 @@ window.exportExcel = function() {
   ];
   XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(sumData), 'Summary');
   
-  // Top 15
-  const t15Data = [['#','Campaign','Email','Delivered','Open%','Click%','Date'], 
-    ...TOP15.map((r,i) => [i+1, BRANDS[r.b]?.label||r.b, r.n, r.d, r.o+'%', r.c+'%', r.dt])];
+  // Top 15 — whatever is currently on screen (live-computed or, if live data
+  // is still too thin, the last verified static snapshot), not always the
+  // hardcoded array regardless of what the dashboard is actually showing.
+  const t15Data = [['#','Campaign','Email','Delivered','Open%','Click%','Date'],
+    ...TOP15_RENDERED.map((r,i) => [i+1, BRANDS[r.b]?.label||r.b, r.n, r.d, r.o+'%', r.c+'%', r.dt])];
   XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(t15Data), 'Top 15 Emails');
   
   // 2026 sends
@@ -3106,6 +3277,7 @@ window.exportExcel = function() {
 renderBrandGrid();
 renderTop15();
 renderBelow();
+renderSegmentFunnelStages();
 renderCopyGrid();
 // Force filters to ALL on initial load
 const _yf = document.getElementById('yearFilter');
@@ -4511,7 +4683,10 @@ function renderOverviewLive(data) {
   const noteEl = document.getElementById('overviewStatusNote');
   const yoyNoteEl = document.getElementById('yoyStatusNote');
   const isSeed = data.generatedBy === 'seed-embedded-data';
-  const emails = (Array.isArray(data.emails) ? data.emails : []).map(normalizeLiveEmail);
+  // Portfolio Overview is portfolio-wide by definition, so 'OTHER' (other HMP
+  // Global business units sharing this HubSpot portal — see scopeEmailsToBrand)
+  // is excluded here unconditionally, the same as everywhere else on this tab.
+  const emails = (Array.isArray(data.emails) ? data.emails : []).map(normalizeLiveEmail).filter(e => e.brand !== 'OTHER');
 
   const byYear = {};
   emails.forEach(e => { if (!e.dateStr) return; const y = e.dateStr.slice(0,4); (byYear[y] = byYear[y] || []).push(e); });
@@ -4627,7 +4802,7 @@ async function autoLoadHubSpotStats() {
       return;
     }
 
-    const data = await res.json(); const emails = Array.isArray(data.emails) ? data.emails : []; const year = String(new Date().getFullYear()); const yearEmails = emails.filter(e => { const parsed = new Date(e.sendDate); return Number.isFinite(parsed.getTime()) && parsed.getFullYear() === Number(year); }); const n = value => { const x = Number(value); return Number.isFinite(x) ? x : 0; }; const delivered = e => n(e.delivered); const opened = e => n(e.opens || e.opened || e.uniqueOpens || delivered(e) * n(e.openRate) / 100); const clicked = e => n(e.clicks || e.clicked || e.uniqueClicks || delivered(e) * n(e.clickRate) / 100); const total = (items, getter) => items.reduce((sum, item) => sum + getter(item), 0);  const deliveredYtd = total(yearEmails, delivered); const sentYtd = total(yearEmails, e => n(e.sent || e.processed || e.delivered)); const openedYtd = total(yearEmails, opened); const clickedYtd = total(yearEmails, clicked); const pct = (value, base) => base > 0 ? (value / base * 100).toFixed(2) + '%' : '0%'; const shortNumber = value => { const x = n(value); if (x >= 1000000) return (x / 1000000).toFixed(2) + 'M'; if (x >= 1000) return (x / 1000).toFixed(1) + 'K'; return Math.round(x).toLocaleString(); }; const setLive = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; }; const setNote = (id, value) => { const el = document.getElementById(id); const note = el && el.parentElement && el.parentElement.querySelector('.kpi-s'); if (note) note.textContent = value; }; const openRate = e => { const d = delivered(e); const o = opened(e); return d > 0 && o <= d ? o / d * 100 : 0; }; const best = emails.filter(e => delivered(e) > 0).sort((a, b) => openRate(b) - openRate(a))[0]; setLive('kpi-emails', (data.totalEmails || emails.length).toLocaleString()); setNote('kpi-emails', 'All-time · ' + (new Set(emails.map(e => e.brand).filter(Boolean)).size || 6) + ' brands'); setLive('kpi-delivered', shortNumber(deliveredYtd)); setNote('kpi-delivered', 'YTD ' + year + ' · HubSpot live'); setLive('kpi-open', pct(openedYtd, deliveredYtd)); setNote('kpi-open', 'Weighted from live delivered opens'); setLive('kpi-click', pct(clickedYtd, deliveredYtd)); setNote('kpi-click', 'Weighted from live delivered clicks'); setLive('kpi-ctor', pct(clickedYtd, openedYtd)); setNote('kpi-ctor', 'Live clicks divided by live opens'); setLive('kpi-deliv', pct(deliveredYtd, sentYtd)); setNote('kpi-deliv', 'YTD delivered ' + shortNumber(deliveredYtd)); if (best) { setLive('kpi-best-o', openRate(best).toFixed(1) + '%'); setNote('kpi-best-o', best.name || 'Best live email'); } setLive('kpi-2026', yearEmails.length.toLocaleString()); setNote('kpi-2026', 'YTD ' + year);
+    const data = await res.json(); const emails = Array.isArray(data.emails) ? data.emails : []; const year = String(new Date().getFullYear()); const yearEmails = emails.filter(e => { const parsed = new Date(e.sendDate); return Number.isFinite(parsed.getTime()) && parsed.getFullYear() === Number(year); }); const n = value => { const x = Number(value); return Number.isFinite(x) ? x : 0; }; const delivered = e => n(e.delivered); const opened = e => n(e.opens || e.opened || e.uniqueOpens || delivered(e) * n(e.openRate) / 100); const clicked = e => n(e.clicks || e.clicked || e.uniqueClicks || delivered(e) * n(e.clickRate) / 100); const total = (items, getter) => items.reduce((sum, item) => sum + getter(item), 0);  const deliveredYtd = total(yearEmails, delivered); const sentYtd = total(yearEmails, e => n(e.sent || e.processed || e.delivered)); const openedYtd = total(yearEmails, opened); const clickedYtd = total(yearEmails, clicked); const pct = (value, base) => base > 0 ? (value / base * 100).toFixed(2) + '%' : '0%'; const shortNumber = value => { const x = n(value); if (x >= 1000000) return (x / 1000000).toFixed(2) + 'M'; if (x >= 1000) return (x / 1000).toFixed(1) + 'K'; return Math.round(x).toLocaleString(); }; const setLive = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; }; const setNote = (id, value) => { const el = document.getElementById(id); const note = el && el.parentElement && el.parentElement.querySelector('.kpi-s'); if (note) note.textContent = value; }; const openRate = e => { const d = delivered(e); const o = opened(e); return d > 0 && o <= d ? o / d * 100 : 0; }; const best = emails.filter(e => delivered(e) > 0 && e.brand !== 'OTHER').sort((a, b) => openRate(b) - openRate(a))[0]; setLive('kpi-emails', (data.totalEmails || emails.length).toLocaleString()); setNote('kpi-emails', 'All-time · ' + (new Set(emails.map(e => e.brand).filter(Boolean)).size || 6) + ' brands'); setLive('kpi-delivered', shortNumber(deliveredYtd)); setNote('kpi-delivered', 'YTD ' + year + ' · HubSpot live'); setLive('kpi-open', pct(openedYtd, deliveredYtd)); setNote('kpi-open', 'Weighted from live delivered opens'); setLive('kpi-click', pct(clickedYtd, deliveredYtd)); setNote('kpi-click', 'Weighted from live delivered clicks'); setLive('kpi-ctor', pct(clickedYtd, openedYtd)); setNote('kpi-ctor', 'Live clicks divided by live opens'); setLive('kpi-deliv', pct(deliveredYtd, sentYtd)); setNote('kpi-deliv', 'YTD delivered ' + shortNumber(deliveredYtd)); if (best) { setLive('kpi-best-o', openRate(best).toFixed(1) + '%'); setNote('kpi-best-o', best.name || 'Best live email'); } setLive('kpi-2026', yearEmails.length.toLocaleString()); setNote('kpi-2026', 'YTD ' + year);
 
     // ── Detect seed vs live data ──────────────────────────────────────────
     const isSeed = data.generatedBy === 'seed-embedded-data';
@@ -4637,6 +4812,9 @@ async function autoLoadHubSpotStats() {
     window.HS_EMAIL_STATS = data;
     renderOverviewLive(data);
     updateKPIs();
+    renderTop15();
+    renderBelow();
+    renderSegmentFunnelStages();
 
     // Header badge
     const header = document.querySelector('header > div:last-child');
